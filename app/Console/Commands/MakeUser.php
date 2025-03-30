@@ -22,7 +22,7 @@ class MakeUser extends Command
      *
      * @var string
      */
-    protected $description = 'Create a new user and synchronize with Pterodactyl API';
+    protected $description = 'Create a new user and synchronize with Pelican API';
 
     /**
      * Execute the console command.

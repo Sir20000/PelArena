@@ -40,7 +40,5 @@ Discord : [PelArena Discord](https://discord.gg/H3nt6Akea9)
 
 ## How install
 
-Follow the instructions below to install PelArena:
-
-https://pelarena.gitbook.io/pelarena
+Follow the instructions below to install PelArena: [here](https://pelarena.gitbook.io/pelarena)
 
