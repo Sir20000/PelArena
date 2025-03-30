@@ -42,3 +42,7 @@ Discord : [PelArena Discord](https://discord.gg/H3nt6Akea9)
 
 Follow the instructions below to install PelArena: [here](https://pelarena.gitbook.io/pelarena)
 
+---
+
+## For research 
+pelican panel client arena 
