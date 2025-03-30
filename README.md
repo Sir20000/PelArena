@@ -29,3 +29,18 @@ PelArena is open-source and always looking for new ideas and improvements! Feel 
 ## License
 
 PelArena is licensed under the [GNU License](LICENSE).
+
+---
+
+## Link
+
+Discord : [PelArena Discord](https://discord.gg/H3nt6Akea9)
+
+---
+
+## How install
+
+Follow the instructions below to install PelArena:
+
+https://pelarena.gitbook.io/pelarena
+
