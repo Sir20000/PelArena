@@ -1,0 +1,12 @@
+.custom-success-button {
+    background-color: #28a745; /* Bootstrap success color */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.custom-success-button:hover {
+    background-color: #218838; /* Darker green for hover effect */
+}
