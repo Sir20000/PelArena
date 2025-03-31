@@ -4,6 +4,7 @@
 
 PelArena is **open source** and always welcomes suggestions and contributions from the community.
 
+Demo is sonn
 ---
 
 ## Features
