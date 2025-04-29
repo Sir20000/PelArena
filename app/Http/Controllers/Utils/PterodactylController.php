@@ -55,6 +55,7 @@ class PterodactylController extends Controller
             'Authorization' => 'Bearer ' . env('PTERODACTYL_API_KEY'),
             'Accept' => 'application/json',
         ])->get(env('PTERODACTYL_API_URL') . '/api/application/nodes/' . $node . '/allocations?per_page=500');
+        log::debug($response);
 
         if ($response->successful()) {
             $allocations = $response->json()['data'];

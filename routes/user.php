@@ -9,9 +9,16 @@ use App\Http\Controllers\Clients\TicketsController;
 use App\Http\Controllers\Clients\CouponController;
 use App\Http\Controllers\Clients\DashboardController;
 use App\Http\Controllers\Clients\CreditsController;
-
 use App\Http\Controllers\Utils\PaymentController;
+use App\Http\Controllers\Clients\NewsController;
+use App\Http\Controllers\Clients\LegalController;
+Route::get('/', [NewsController::class, 'index', ])->name('welcome');
 
+Route::get('/terms', [LegalController::class , 'terms'])->name('terms');
+Route::get('/privacy',[LegalController::class , 'privacy'] )->name('privacy');
+Route::get('/legal', [LegalController::class , 'legal'])->name('legal');
+
+Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

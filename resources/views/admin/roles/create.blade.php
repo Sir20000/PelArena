@@ -1,13 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent leading-tight">
+
             {{ __('Create a Role') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg p-6">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-xl p-6">
                 <form action="{{ route('admin.roles.store') }}" method="POST">
                     @csrf
 
@@ -55,7 +56,7 @@
                     <!-- Affichage des boîtes par core -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($groupedPermissions as $core => $permissions)
-                            <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md">
+                            <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-xl shadow-md">
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
                                     {{ $core }}
                                 </h3>

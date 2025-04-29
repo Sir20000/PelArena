@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Mail\ServerPurchased;
 use Illuminate\Support\Facades\Mail;
-
+use App\Extensions\ExtensionManager;
 use Illuminate\Support\Facades\Auth;
 
 class ServersController extends Controller
@@ -22,10 +22,17 @@ class ServersController extends Controller
     public function createOrder(Request $request, $categorie)
     {
         $categorie = Categories::all()->where('id', $categorie)->first();
+        if(!$categorie){
+abort(404);
+        }
+        log::debug($categorie);
+
         if ($categorie->stock == 0) {
 
             return redirect()->route('client.servers.index');
         }
+        $provider = ExtensionManager::load('pterodactyl');
+
         $request->validate([
             'server_name' => 'required|string',
             'ram' => 'required|integer',
@@ -37,7 +44,6 @@ class ServersController extends Controller
 
         ]);
         $egg_id = $categorie->egg_id;
-        $nests = $categorie->nests;
         // Créer une commande de serveur
         if ($request->ram > $categorie->maxram) {
             return redirect()->back()->with('error', 'La RAM demandée dépasse la limite autorisée');
@@ -59,6 +65,7 @@ class ServersController extends Controller
             return redirect()->back()->with('error', 'Le nombre de backups demandé dépasse la limite autorisée');
         }
         $prix = Prix::all()->where('categories_id', $categorie->id)->first();
+        log::debug($prix);
         $prix_ram = $request->ram * $prix->ram;
         $prix_cpu = $request->cpu * $prix->cpu;
         $prix_disk = $request->disk * $prix->disk;
@@ -104,7 +111,14 @@ class ServersController extends Controller
             'environment' => [
                 'MINECRAFT_VERSION' => 'latest',
                 'SERVER_JARFILE' => 'server.jar',
-                'BUILD_NUMBER' => 'latest'
+                'BUILD_NUMBER' => 'latest',
+                'USER_UPLOAD' => 0,
+                'MAIN_FILE' => 'index.js',
+                'PY_FILE' => 'app.py',
+                'AUTO_UPDATE' => 0,
+                'REQUIREMENTS_FILE' => 'requirements.txt',
+
+
             ],
             'limits' => [
                 'memory' => $request->ram * 1024,
@@ -123,7 +137,7 @@ class ServersController extends Controller
             ],
         ]);
 
-        
+        log::debug($response);
         if ($response->successful()) {
 
             $serverId = $response->json()['attributes']['id'];  // Récupérer l'ID du serveur créé
@@ -134,12 +148,7 @@ class ServersController extends Controller
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])->post(env('PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}/suspend", []);
-            $serverDetails = [
-                'cost' => $total,
-                'server_name' => $request->server_name,
-                
-            ];
-            Mail::to(Auth::user()->email)->send(new ServerPurchased($serverDetails));
+          
             if ($categorie->stock !== -1) {
                 $categorie->stock = $categorie->stock - 1;
                 $categorie->save();
@@ -180,6 +189,9 @@ class ServersController extends Controller
     public function orders(Request $request, $a)
     {
         $categorie = Categories::where('name', $a)->first();
+        if(!$categorie){
+            abort(404);
+                    }
         $server = ServerOrder::where('categorie', $categorie->name)->count();
 
         
@@ -202,12 +214,8 @@ class ServersController extends Controller
     }
     public function power(Request $request, $product)
     {
-        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
-            ->where('id', $product)
-            ->get();
-        if ($yourserver->isEmpty()) {
-            abort(404);
-        }
+        CheckProduct($product->id);
+
         $server = PterodactylController::idtoindentifier($product);
 
         $url = env('PTERODACTYL_API_URL') . '/api/client/servers/' . $server . '/power';
@@ -233,12 +241,8 @@ class ServersController extends Controller
     public function createBackup(Request $request, ServerOrder $product)
     {
 
-        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
-            ->where('id', $product->id)
-            ->get();
-        if ($yourserver->isEmpty()) {
-            abort(404);
-        }
+        CheckProduct($product->id);
+
         $server = PterodactylController::idtoindentifier($product->id);
 
         $url = env('PTERODACTYL_API_URL') . '/api/client/servers/' . $server . '/backups';
@@ -248,22 +252,18 @@ class ServersController extends Controller
         ]);
         $status = $response->status();
         
-        if ($status == 201) {
+        if ($status == 200) {
             return response()->json(['status' => 'success', 'message' => 'Backup created successfully']);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'Failed to create backup'], $status);
+            return response()->json(['status' => 'error', 'message' => 'Failed to create backup']);
         }
     }
 
     public function downloadBackup(Request $request, ServerOrder $product, $backupId)
     {
 
-        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
-            ->where('id', $product->id)
-            ->get();
-        if ($yourserver->isEmpty()) {
-            abort(404);
-        }
+        CheckProduct($product->id);
+
         $server = PterodactylController::idtoindentifier($product->id);
         $url = env('PTERODACTYL_API_URL') . '/api/client/servers/' . $server . '/backups/' . $backupId . '/download';
 
@@ -277,12 +277,8 @@ class ServersController extends Controller
     }
     public function restoreBackup(Request $request, ServerOrder $product, $backupId)
     {
-        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
-            ->where('id', $product->id)
-            ->get();
-        if ($yourserver->isEmpty()) {
-            abort(404);
-        }
+        CheckProduct($product->id);
+
         $server = PterodactylController::idtoindentifier($product->id);
         $url = env('PTERODACTYL_API_URL') . '/api/client/servers/' . $server . '/backups/' . $backupId . '/restore';
 
@@ -299,12 +295,7 @@ class ServersController extends Controller
     public function deleteBackup(Request $request, ServerOrder $product, $backupId)
     {
 
-        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
-            ->where('id', $product->id)
-            ->get();
-        if ($yourserver->isEmpty()) {
-            abort(404);
-        }
+        CheckProduct($product->id);
         $server = PterodactylController::idtoindentifier($product->id);
         $url = env('PTERODACTYL_API_URL') . '/api/client/servers/' . $server . '/backups/' . $backupId;
 

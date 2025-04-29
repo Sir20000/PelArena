@@ -36,7 +36,6 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        log::debug("s");
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -52,9 +51,7 @@ class CategoriesController extends Controller
             'maxbyuser' => 'required|integer',
             'stock' => 'required|integer',
         ]);
-        log::debug("a");
         $category = Categories::create($validatedData);
-        log::debug("b");
         $priceData = $request->validate([
             'ram' => 'required|numeric|min:0',
             'cpu' => 'required|numeric|min:0',
@@ -88,39 +85,45 @@ class CategoriesController extends Controller
      */
     public function edit(Categories $id)
     {
-        $nodes = PterodactylController::getNodes(); // Récupérer la liste des nodes
-        $category = $id;
-        $selectedNodes = json_decode($category->nodes, true); // Décoder les nodes enregistrés
+    $prix = Prix::where("categories_id",$id->id)->first();
     
-        return view('admin.categorie.edit', compact('category', 'nodes', 'selectedNodes'));
+        return view('admin.categorie.edit', compact('id','prix'));
     }
     /**
      * Met à jour un prix existant.
      */
     public function update(Request $request, Categories $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'image' => 'nullable',
-            'egg_id' => 'required|integer|max:5',
-            'nests' => 'required|integer|max:5',
-           'maxram' => 'required|integer',
-           'maxcpu' => 'required|integer',
-           'maxstorage' => 'required|integer',
-           'maxdb' => 'required|integer',
-           'maxbackups' => 'required|integer',
-           'maxallocations' => 'required|integer',
-           'maxbyuser' => 'required|integer',
-           'stock' => 'required|integer',
+        
+        $category = Categories::findOrFail($id->id);
 
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'nullable', // Ajout de la validation pour l'image
+            'egg_id' => 'required|integer',
+            'nests' => 'required|integer',
+            'maxram' => 'required|integer',
+            'maxcpu' => 'required|integer',
+            'maxstorage' => 'required|integer',
+            'maxdb' => 'required|integer',
+            'maxbackups' => 'required|integer',
+            'maxallocations' => 'required|integer',
+            'maxbyuser' => 'required|integer',
+            'stock' => 'required|integer',
         ]);
-    
-        $id->update($request->all());
-        
-        
-    
-        return redirect()->route('admin.categorie.index')->with('success', 'Prix mis à jour avec succès.');
+        $category->update($validatedData);
+        $priceData = $request->validate([
+            'ram' => 'required|numeric|min:0',
+            'cpu' => 'required|numeric|min:0',
+            'storage' => 'required|numeric|min:0',
+            'db' => 'required|numeric|min:0',
+            'backups' => 'required|numeric|min:0',
+            'allocations' => 'required|numeric|min:0',
+         ]);
+         $prix = Prix::where('categories_id', $id->id)->firstOrFail();
+         $prix->update($priceData);
+        return redirect()->route('admin.categorie.index')->with('success', 'category mis à jour avec succès.');
     }
     
     

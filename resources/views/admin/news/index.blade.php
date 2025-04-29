@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent leading-tight">
+
             {{ __('News') }}
         </h2>
     </x-slot>
@@ -8,7 +9,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex justify-between items-center">
                         <div class="item1">
@@ -27,17 +28,17 @@
                     <div class="space-y-4 mt-6">
 
                         @if(session('success'))
-                        <div class="bg-green-500  text-white px-4 py-2 rounded-lg mt-2">
+                        <div class="bg-green-500  text-white px-4 py-2 rounded-xl mt-2">
                             <i class="ri-information-line"></i> {{ session('success') }}
                         </div>
                         @endif
                         @if(session('error'))
-                        <div class="bg-red-500 text-white px-4 py-2 rounded-lg mt-2">
+                        <div class="bg-red-500 text-white px-4 py-2 rounded-xl mt-2">
                             <i class="ri-information-line"></i> {{ session('error') }}
                         </div>
                         @endif
                         @forelse($news as $newsItem)
-                        <div class="bg-white dark:bg-gray-700 p-4 mx-auto rounded-lg shadow-md flex items-center justify-between dark:text-white text-black relative" style="max-width: 1180px;">
+                        <div class="bg-white dark:bg-gray-700 p-4 mx-auto rounded-xl shadow-md flex items-center justify-between dark:text-white text-black relative" style="max-width: 1180px;">
                             <div class="flex-1">
                                 
                                 <img src="{{ asset('storage/' . $newsItem->image) }}" width="50" height="50" alt="Image">
@@ -53,9 +54,9 @@
                                 @endif
                                 @if(auth()->user() && auth()->user()->hasAccess('admin.users.destroy'))
 
-                                <form action="{{ route('admin.news.destroy', $newsItem) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce coupon ?');">
+                                <form action="{{ route('admin.news.destroy', $newsItem) }}" method="GET" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce coupon ?');">
                                     @csrf
-                                    @method('DELETE')
+                                    @method('GET')
                                     <button type="submit" class="btn btn-danger">Supprimer</button>
                                 </form>
                                 @endif

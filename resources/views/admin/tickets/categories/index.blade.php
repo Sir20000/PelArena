@@ -1,13 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent leading-tight">
+
             {{ __('Ticket category') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div>
                         <div class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex justify-between items-center">
@@ -30,7 +31,7 @@
 
                     <div class="space-y-4 mt-6 ">
                         @foreach($categories as $p)
-                        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md flex items-center justify-between">
+                        <div class="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-md flex items-center justify-between">
                             <div class="flex-1">
                                 <h3 class="text-lg font-medium dark:text-white text-black">Name : {{ $p->name }}</h3>
                                 <p class="text-gray-300">Priority : {{ $p->priority }}</p>

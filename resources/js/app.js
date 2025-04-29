@@ -1,2 +1,11 @@
 import './bootstrap';
-
+import './dark/dark';
+import './chart/chart';
+import './jQuery/jQuery';
+import './remixicon/remixicon';
+import './trumbowyg/trumbowyg';
+import './tab/tab';
+import './function/function';
+import './affiliate_code/affiliate_code';
+import './server_management/server_management';
+import './alert/alert';

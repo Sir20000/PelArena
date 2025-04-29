@@ -10,14 +10,13 @@
         @vite(['resources/js/app.js'])
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/remixicon@latest/fonts/remixicon.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         @vite(['resources/css/app.css'])
 
         
     </head>
     <body class="font-sans antialiased">
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="error" :message="session('error')" />
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 

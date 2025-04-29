@@ -52,30 +52,15 @@ class TicketsController extends Controller
 
     public function show($ticketId)
     {
-        $yourticket = Ticket::with('category', 'user')
-            ->orderByRaw("FIELD(status, 'open') DESC")
-            ->orderBy('created_at', 'desc')
-            ->where("user_id",Auth::id())
-            ->where('id', $ticketId)
-            ->get();
-        if ($yourticket->isEmpty()) {
-            abort(404);
-            }
+        CheckTicket($ticketId);
         $ticket = Ticket::findOrFail($ticketId);
         $messages = TicketMessage::where('ticket_id', $ticketId)->get();
         return view('client.tickets.show', compact('ticket', 'messages'));
     }
 
     public function close($id)
-    { $yourticket = Ticket::with('category', 'user')
-        ->orderByRaw("FIELD(status, 'open') DESC")
-        ->orderBy('created_at', 'desc')
-        ->where("user_id",Auth::id())
-        ->where('id', $id)
-        ->get();
-    if ($yourticket->isEmpty()) {
-        abort(404);
-        }
+    {         CheckTicket($id);
+
         $ticket = Ticket::findOrFail($id);
         $ticket->update(['status' => 'closed']);
         return redirect()->route('tickets.index')->with('success', 'Ticket fermé avec succès!');
@@ -83,15 +68,8 @@ class TicketsController extends Controller
 
     public function addMessage(Request $request, $ticketId)
     {
-        $yourticket = Ticket::with('category', 'user')
-        ->orderByRaw("FIELD(status, 'open') DESC")
-        ->orderBy('created_at', 'desc')
-        ->where("user_id",Auth::id())
-        ->where('id', $ticketId)
-        ->get();
-    if ($yourticket->isEmpty()) {
-        abort(404);
-        }
+        CheckTicket($ticketId);
+
         $request->validate(['message' => 'required|string']);
 
         TicketMessage::create([

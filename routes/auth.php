@@ -10,9 +10,8 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\TwoFactorController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use PragmaRX\Google2FA\Google2FA;
+
+
 
 use Illuminate\Support\Facades\Route;
 

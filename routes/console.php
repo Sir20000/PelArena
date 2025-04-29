@@ -9,5 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('servers:suspend-due')->daily();
-Schedule::command('cache:expire-users')->daily();
 Schedule::command('servers:delete-due')->daily();

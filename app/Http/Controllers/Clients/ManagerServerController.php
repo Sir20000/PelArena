@@ -17,13 +17,12 @@ class ManagerServerController extends Controller
 
     public function index(ServerOrder $server)
     {
-        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
-            ->where('id', $server->id)
-            ->get();
-        if ($yourserver->isEmpty()) {
-            abort(404);
-        }
+        CheckProduct($server->id);
+
         $categorie = Categories::all()->where("name", $server->categorie)->first();
+        if(!$categorie){
+            abort(404);
+                    }
         $url =  PterodactylController::getLinkForServer($server->server_id);
         $serveriden = PterodactylController::idtoindentifier($server->id);
         $urltr = env('PTERODACTYL_API_URL') . '/api/client/servers/' . $serveriden . '/backups';

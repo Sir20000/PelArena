@@ -43,4 +43,48 @@ class NewsController extends Controller
    {
        $news = News::all();
        return view('admin.news.index', compact('news'));
-   }}
+   }
+   public function update(Request $request, News $id)
+   {
+   
+       try {
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('news_images', 'public');
+        } else {
+            $imagePath = $existingNews->image ?? null; // Utiliser l'image existante si aucune nouvelle image n'est envoyée
+        }
+           
+           
+   
+           $id->update($request->all());
+   
+           return redirect()->route('admin.news.index')->with('success', 'Prix mis à jour avec succès.');
+       } catch (\Illuminate\Validation\ValidationException $e) {
+           return redirect()->back()->withErrors($e->errors())->withInput();
+       } catch (\Exception $e) {
+           return redirect()->back()->with('error', 'Une erreur est survenue lors de la mise à jour.' .$e )->withInput();
+       }
+   }
+   
+   
+   /**
+    * Supprime un admin.news.
+    */
+   public function destroy( News $new)
+   {
+       $new->delete();
+   
+       return redirect()->route('admin.news.index')->with('success', 'New supprimé avec succès.');
+   }
+   public function edit( News $id) {
+    $new =$id;
+
+    return view('admin.news.edit', compact('new'));
+   }
+   }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+
 if (!function_exists('updateEnv')) {
     /**
      * Update or add a key-value pair in the .env file.
@@ -37,7 +38,6 @@ if (!function_exists('updateEnv')) {
         // Écrire les modifications dans le fichier .env
         File::put($envPath, $envContent);
     }
-    
 }
 if (!function_exists('settings')) {
     /**
@@ -51,19 +51,42 @@ if (!function_exists('settings')) {
     {
         // Utiliser le cache pour éviter des requêtes répétées
         $settings = DB::table('settings')->pluck('settings', 'name')->toArray();
-        
+
 
         // Retourner la valeur correspondante ou la valeur par défaut
         return $settings[$key] ?? $default;
     }
-    if (!function_exists('format_number')) {
-        function format_number($number) {
-            if ($number >= 1000000) {
-                return number_format($number / 1000000, 1) . 'M'; // Million
-            } elseif ($number >= 1000) {
-                return number_format($number / 1000, 1) . 'K'; // Mille
-            }
-            return $number;
+}
+if (!function_exists('format_number')) {
+    function format_number($number)
+    {
+        if ($number >= 1000000) {
+            return number_format($number / 1000000, 1) . 'M'; // Million
+        } elseif ($number >= 1000) {
+            return number_format($number / 1000, 1) . 'K'; // Mille
+        }
+        return $number;
+    }
+}
+if (!function_exists('CheckProduct')) {
+    function CheckProduct($id)
+    {
+        $yourserver = \App\Models\ServerOrder::where("user_id", Auth::id())
+            ->where('id', $id)
+            ->get();
+        if ($yourserver->isEmpty()) {
+            abort(404);
+        }
+    }
+}
+if (!function_exists('CheckTicket')) {
+    function CheckTicket($id)
+    {
+        $yourserver = \App\Models\Ticket::where("user_id", Auth::id())
+            ->where('id', $id)
+            ->get();
+        if ($yourserver->isEmpty()) {
+            abort(404);
         }
     }
 }

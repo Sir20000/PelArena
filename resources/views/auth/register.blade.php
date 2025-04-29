@@ -38,7 +38,7 @@
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
-        <div class="mt-4">
+        <div class="mt-4 hidden">
             <x-input-label for="affiliate_code" :value="__('Affiliate Code')" />
             <x-text-input id="affiliate_code" class="block mt-1 w-full" type="text" name="affiliate_code" :value="old('affiliate_code')"   />
             <x-input-error :messages="$errors->get('affiliate_code')" class="mt-2" />
@@ -53,23 +53,5 @@
             </x-primary-button>
         </div>
     </form>
-<script>
-    function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
 
-const affiliateCode = getQueryParam('affiliate_code');
-
-if (affiliateCode) {
-    const affiliateField = document.querySelector('[name="affiliate_code"], #affiliate_code');
-
-    if (affiliateField) {
-        affiliateField.value = affiliateCode;
-    } else {
-        console.warn('Champ affiliate_code introuvable sur la page.');
-    }
-}
-
-    </script>
 </x-guest-layout>

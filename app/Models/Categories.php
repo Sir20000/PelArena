@@ -8,12 +8,32 @@ class Categories extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'image','egg_id','nests','created_at','update_at','nodeid','maxram','maxcpu','maxstorage','maxdb','maxbackups','maxallocations','maxbyuser','stock'];
+    protected $fillable = [
+        'name',
+        'description',
+        'image',
+        'egg_id',
+        'nests',
+        'created_at',
+        'update_at',
+        'nodeid',
+        'maxram',
+        'maxcpu',
+        'maxstorage',
+        'maxdb',
+        'maxbackups',
+        'maxallocations',
+        'maxbyuser',
+        'stock',
+        'extension_fields', // new JSON column for dynamic fields
+    ];
+
     public function prix()
     {
         return $this->hasMany(Prix::class, 'categories_id');
     }
+
     protected $casts = [
-        'numbers' => 'nodeid', // Cast JSON en tableau PHP
+        'extension_fields' => 'array', // cast JSON to array
     ];
 }

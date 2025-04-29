@@ -23,13 +23,14 @@ class DeleteServersOnDueDate extends Command
      */
     public function handle()
     {
-
+$run = true;
         $orders = ServerOrder::where('status', 'pending')
             ->get();
             if(count($orders) == 0){
-                return 0;
+                $run = false;
 
             }
+            if($run){
         $bar = $this->output->createProgressBar(count($orders));
         $bar->start();
 
@@ -59,6 +60,7 @@ class DeleteServersOnDueDate extends Command
             
         }
         $bar->finish();
+    }
         echo("\n");
         $orders = ServerOrder::where('status',  'cancelled') // Éviter de retraiter ceux déjà en 'pending'
             ->get();
@@ -70,7 +72,7 @@ class DeleteServersOnDueDate extends Command
         $bar->start();
 
         foreach ($orders as $order) {
-            if ($order->status === 'cancelled' && $order->updated_at->diffInDays(now()) >= 3) {
+            if ($order->status === 'cancelled' ) {
               $serverId = $order->server_id;
                     $order->delete();
                     $this->info("Server ID {$serverId} deleted becose his is canceled.");

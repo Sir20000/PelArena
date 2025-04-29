@@ -5,13 +5,18 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center">
-                        <span class="ml-1 dark:text-white text-black">{{ env('APP_NAME') }}</span> <!-- Nom de l'application -->
-                    </a>
+                <div class="item">
+                    <img src="/favicon.ico" height="28px" width="28px"/>
                 </div>
-   
+                <div class="item">
+                    <a href="{{ route('dashboard') }}" class="flex items-center">
+                        <span class="ml-2 bg-gradient-to-r bg-blue-600   bg-clip-text text-transparent  text-lg font-bold">{{ env('APP_NAME') }}</span> <!-- Nom de l'application -->
+                    </a>
+                    </div>
+                </div>
+                
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex ">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -40,7 +45,7 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-xl text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>

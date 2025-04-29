@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent leading-tight">
+
             {{ __('Dashboard admin') }}<br>
 
         </h2>
@@ -8,7 +9,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
 
@@ -26,12 +27,12 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl mt-4">
                 <div class="p-4 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('admin.revenue.index') }}" method="GET" class="mb-3">
                     <div class="input-group">
-                                <input type="text" name="search" class=" rounded-lg w-96" placeholder="Rechercher un serveur" value="{{ request('search') }}">
-                                <button type="submit" class=" bg-gray-400 w-10 h-10 rounded-lg "><i class="ri-search-2-line "></i></button>
+                                <input type="text" name="search" class=" rounded-xl w-96" placeholder="Rechercher un serveur" value="{{ request('search') }}">
+                                <button type="submit" class=" bg-gray-400 w-10 h-10 rounded-xl "><i class="ri-search-2-line "></i></button>
                             </div>
                     </form>
                 </div>
@@ -39,7 +40,7 @@
             <div class="flex flex-wrap justify-start">
                 
             @foreach ($transaction as $transactiona)
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-16 min-h-56 min-w-80 mb-4 mr-11 ml-10">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl mt-16 min-h-56 min-w-80 mb-4 mr-11 ml-10">
                 <div class="p-4 text-gray-900 dark:text-gray-100">
                     <div class="mt-2">
                         <h3 class="text-lg font-semibold mb-6">Transaction</h3>

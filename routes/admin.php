@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoriesController;
-use App\Http\Controllers\Admin\PrixController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\TicketController;
@@ -13,8 +12,11 @@ use App\Http\Controllers\Admin\ServersController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\StatistiqueController;
-
+use App\Http\Controllers\Admin\ApiController;
+use App\Http\Controllers\Admin\ExtensionConfigController;
+use App\Http\Controllers\Admin\ExtensionController;
 use App\Http\Controllers\Admin\TicketsCategoriesController;
+
 
 Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
@@ -88,8 +90,10 @@ Route::prefix('news')->group(function () {
     Route::get('/', [NewsController::class, 'index'])->name('admin.news.index');
     Route::get('/create', [NewsController::class, 'create'])->name('admin.news.create');
     Route::post('/', [NewsController::class, 'store'])->name('admin.news.store');
-    Route::post('/destroy/{id}', [NewsController::class, 'destroy'])->name('admin.news.destroy');
-    Route::post('/edit/{id}', [NewsController::class, 'edit'])->name('admin.news.edit');
+    Route::get('/destroy/{new}', [NewsController::class, 'destroy'])->name('admin.news.destroy');
+    Route::get('/edit/{id}', [NewsController::class, 'edit'])->name('admin.news.edit');
+
+    Route::post('/update/{id}', [NewsController::class, 'update'])->name('admin.news.update');
 
 });
 
@@ -99,10 +103,26 @@ Route::prefix('roles')->group(function () {
     Route::post('/store', [RolesController::class, 'store'])->name('admin.roles.store');
     Route::get('/{id}/edit', [RolesController::class, 'edit'])->name('admin.roles.edit');
     Route::post('/{id}/update', [RolesController::class, 'update'])->name('admin.roles.update');
-    Route::get('/{id}/delete', [RolesController::class, 'destroy'])->name('admin.roles.destroy');
+    Route::delete('/{id}/delete', [RolesController::class, 'destroy'])->name('admin.roles.destroy');
 });
 
 Route::prefix('analyse')->group(function () {
     Route::get('/', [StatistiqueController::class, 'index'])->name('admin.statistique.index');
    
 });
+
+Route::prefix('api')->group(function () {
+    Route::get('/', [ApiController::class, 'index'])->name('admin.api.index');
+    Route::get('/create', [ApiController::class, 'create'])->name('admin.api.create');
+    Route::get('/{id}', [ApiController::class, 'show'])->name('admin.api.show');
+    Route::get('/{id}/edit', [ApiController::class, 'edit'])->name('admin.api.edit');
+    Route::get('/{id}/delete', [ApiController::class, 'destroy'])->name('admin.api.destroy');
+
+    Route::post('/{id}/update', [ApiController::class, 'update'])->name('admin.api.update');
+    Route::post('/store', [ApiController::class, 'store'])->name('admin.api.store');
+});
+Route::get('/extensions/{extension}/config', [ExtensionConfigController::class, 'index'])->name('admin.extensions.config');
+
+// Sauvegarder les changements
+Route::post('/extensions/{extension}/config', [ExtensionConfigController::class, 'save'])->name('admin.extensions.config.save');
+Route::get('/extensions', [ExtensionController::class, 'index'])->name('admin.extensions.index');

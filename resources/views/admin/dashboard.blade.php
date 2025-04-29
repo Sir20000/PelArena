@@ -1,13 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent leading-tight">
+
             {{ __('Dashboard admin') }}<br>
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <p>Bienvenue, {{ auth()->user()->name }} !</p>
                     <p>Ceci est le tableau de bord administratif où vous pouvez mettre à jour les paramètres de l'application.</p>
@@ -15,16 +16,16 @@
                 </div>
             </div>
             @if (session('success'))
-                        <div class="bg-green-500  text-white px-4 py-2 rounded-lg mt-2">
+                        <div class="bg-green-500  text-white px-4 py-2 rounded-xl mt-2">
                             {{ session('success') }}
                         </div>
                         @endif
                         @if (session('error'))
-                        <div class="bg-red-500 text-white px-4 py-2 rounded-lg mt-2">
+                        <div class="bg-red-500 text-white px-4 py-2 rounded-xl mt-2">
                             {{ session('error') }}
                         </div>
                         @endif
-            <nav class="flex border-b dark:border-gray-700 mt-4 bg-white rounded-lg">
+            <nav class="flex border-b dark:border-gray-700 mt-4 bg-white rounded-xl">
                 <button class="tab-link px-4 py-2 text-gray-600 dark:text-gray-300 focus:outline-none" data-tab="general"> <i class="ri-settings-4-line"></i> Général</button>
                 <button class="tab-link px-4 py-2 text-gray-600 dark:text-gray-300 focus:outline-none" data-tab="pterodactyl"> <i class="ri-links-line"></i> Pilcan</button>
                 <button class="tab-link px-4 py-2 text-gray-600 dark:text-gray-300 focus:outline-none" data-tab="legal"><i class="ri-information-line"></i> Legal</button>
@@ -37,7 +38,7 @@
             </nav>
             <form action="{{ route('admin.dashboard.update') }}" method="POST" class="space-y-4">
                 @csrf
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg  tab-content" id="general">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl  tab-content" id="general">
 
                     <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4 ">
                         <!-- TVA Field -->
@@ -82,7 +83,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg tab-content " id="pterodactyl">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl tab-content " id="pterodactyl">
 
                     <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                         <!-- PTERODACTYL_API_URL Field -->
@@ -107,7 +108,7 @@
                 </div>
 
 
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg tab-content" id="legal">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl tab-content" id="legal">
 
                     <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4 ">
 
@@ -129,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg tab-content" id="paypal">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl tab-content" id="paypal">
 
                     <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4 ">
 
@@ -181,7 +182,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg  tab-content" id="alert">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl  tab-content" id="alert">
 
                     <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                         <div class="form-group">
@@ -227,34 +228,5 @@
     </div>
     </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const tabLinks = document.querySelectorAll(".tab-link");
-            const tabContents = document.querySelectorAll(".tab-content");
-
-            tabLinks.forEach((tab) => {
-                tab.addEventListener("click", function() {
-                    const tabId = this.getAttribute("data-tab");
-
-                    tabContents.forEach((content) => {
-                        content.classList.add("hidden");
-                    });
-
-                    document.getElementById(tabId).classList.remove("hidden");
-
-                    tabLinks.forEach((tab) => {
-                        tab.classList.remove("border-b-2", "border-blue-500", "text-blue-500");
-                        tab.classList.add("text-gray-600", "dark:text-gray-300");
-                    });
-
-                    this.classList.remove("text-gray-600", "dark:text-gray-300");
-                    this.classList.add("border-b-2", "border-blue-500", "text-blue-500");
-                });
-            });
-
-            // Activer par défaut le premier onglet
-            tabLinks[0].click();
-        });
-    </script>
 
 </x-app-layout>
