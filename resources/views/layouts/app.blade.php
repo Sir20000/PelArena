@@ -12,7 +12,8 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         @vite(['resources/css/app.css'])
 
-        
+        <meta name="description" content="{{settings('seo')}}">
+
     </head>
     <body class="font-sans antialiased">
     <x-alert type="success" :message="session('success')" />

@@ -45,5 +45,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(function () {
             return view('auth.verify-2fa');
         });
+
     }
 }

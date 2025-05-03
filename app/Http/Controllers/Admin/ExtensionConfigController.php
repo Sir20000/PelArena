@@ -41,7 +41,12 @@ class ExtensionConfigController extends Controller
                 ['value' => $value]
             );
         }
-
+        $test=$provider->testConfig();
+if ($test){
         return redirect()->back()->with('success', 'Configuration enregistrée.');
+    }else{
+        return redirect()->back()->with('error', 'Configuration invalide.');
+
+    }
     }
 }

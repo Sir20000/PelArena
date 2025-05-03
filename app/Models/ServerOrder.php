@@ -21,15 +21,18 @@ class ServerOrder extends Model
                             'paypal_order_id',
                             'server_id',
                             'renouvelle',
-                            'categorie'
+                            'categorie',
+                            'extension_fields'
                           ];
     protected $casts =    [
                             'renouvelle' => 'datetime',
+                            'extension_fields' => "array"
                           ];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 
    
 }

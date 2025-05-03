@@ -64,7 +64,7 @@ Hébergeur : OVH, 2 Rue Kellermann, 59100 Roubaix, France', 'env' => 0],
 ['name'=> 'alert_color_text','settings'=>"white","env"=>0],
 ['name'=> 'alert_color_data','settings'=>"O","env"=>0],
 ['name'=> 'alert_color_icon','settings'=>"ri-information-line","env"=>0],
-
+['name'=>'seo','settings'=>'Your seo',"env"=>0],
 ];
         $defaultCategoriTicket = [
             ['name' => 'Facturation', 'priority' => 'low',],

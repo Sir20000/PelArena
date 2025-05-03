@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Prix;
 
 use App\Http\Controllers\Controller;
 use App\Models\CouponUsage;
@@ -118,8 +117,7 @@ class StatistiqueController extends Controller
                 // Passe au mois suivant
                 $carbonDate->addMonth();
             }
-            $prixData = Prix::with('categorie') // Charge les catégories associées
-                ->get();
+            
 
                 $totalrequete =settings("reqquet");
             return view('admin.statistique.index', compact(
@@ -149,7 +147,6 @@ class StatistiqueController extends Controller
                 'lastMonthRevenue',
                 'lastYearRevenue',
                 'thisYearRevenue',
-                'prixData',
                 'totalrequete'
             ));
         } catch (\Exception $e) {

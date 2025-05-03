@@ -9,6 +9,7 @@ use App\Models\ServerOrder;
 use App\Models\Categories;
 use App\Models\Prix;
 use App\Models\Trensaction;
+use App\Extensions\ExtensionManager;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -27,32 +28,45 @@ class PaymentController extends Controller
         $user = auth()->user();
 
         if ($order->cost == 0) {
+            $categorie = $order->categorie;
 
+            $categorieid = Categories::all()->where('name', $categorie)->first();
 
 
             $order->update(['status' => 'active', 'renouvelle' => Carbon::now()->addMonth(1)]);
             $serverId = $order->server_id;
-            $suspendResponse = Http::withHeaders(headers: [
-                'Authorization' => 'Bearer ' . env(key: 'PTERODACTYL_API_KEY'),
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])->post(url: env(key: 'PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}/unsuspend", data: []);
-            $categorie = $order->categorie;
-            $categorieid = Categories::all()->where('name', $categorie)->first();
-            $prix = Prix::all()->where('categories_id', $categorieid)->first();
-            $prix_ram = $order->ram * $prix->ram;
-            $prix_cpu = $order->cpu * $prix->cpu;
-            $prix_disk = $order->disk * $prix->disk;
-            $prix_db = $order->db * $prix->db;
-            $prix_allocations = $order->allocations * $prix->allocations;
-            $prix_backups = $order->backups * $prix->backups;
-            $total = $prix_ram + $prix_cpu + $prix_disk + $prix_db +
-                $prix_allocations + $prix_backups;
-                $taux =settings("tva");
-                $total = $total * (1 +$taux / 100);
-                
-                $total = round($total, 2);
 
+            $provider = ExtensionManager::load($categorieid->extension);
+
+            if($provider){
+                $info = json_decode($order->extension_fields,true);
+                $provider->suspendServer($info["info"]);
+
+            }
+           
+
+
+
+            $totalPrice = 0;
+
+        $extension_fields = json_decode($categorie->extension_fields,true);
+        $prix = $extension_fields['prix'];
+        $maxValues = $extension_fields['max'];
+
+        foreach ($order->extension_fields as $key => $value) {
+            if ($key === 'info') {
+                continue;
+            }
+        
+            if (isset($prix[$key])) {
+                $totalPrice += $prix[$key] * $value;
+            }
+        }
+
+        $taux = settings("tva");
+        $total_tva = $totalPrice * $taux / 100;
+        $total = $totalPrice + $total_tva;
+        $total = round($total, 2);
             $order->update(['cost' => $total]);
 
             return redirect()->route(route: 'client.servers.index')->with(key: 'success', value: 'Commande payée avec succès.');
@@ -114,12 +128,19 @@ class PaymentController extends Controller
                 'status' => 'active',
                 'renouvelle' => $order->renouvelle ? Carbon::parse($order->renouvelle)->addMonth(1) : Carbon::now()->addMonth(1),
             ]);
+            $categorie = $order->categorie;
+
+            $categorieid = Categories::all()->where('name', $categorie)->first();
             $serverId = $order->server_id;
-            $suspendResponse = Http::withHeaders(headers: [
-                'Authorization' => 'Bearer ' . env(key: 'PTERODACTYL_API_KEY'),
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])->post(url: env(key: 'PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}/unsuspend", data: []);
+            $provider = ExtensionManager::load($categorieid->extension);
+
+            if($provider){
+                // Vérifier si extension_fields est un tableau ou un objet
+                $info = is_array($order->extension_fields) ? $order->extension_fields : json_decode($order->extension_fields, true);
+                
+                // Utiliser les données pour suspendre le serveur
+                $provider->suspendServer($info["info"]);
+            }
             Trensaction::create([
                 "cost" => $order->cost,
                 "user_id" => auth()->id(),
@@ -127,25 +148,26 @@ class PaymentController extends Controller
                 "server_order_id" => $order->id,
             ]);
             $categorie = $order->categorie;
-            $categorieid = Categories::all()->where('name', $categorie)->first();
+            $categorieid = Categories::where('name', $categorie)->first();
+            $totalPrice = 0;
 
-            $prix = Prix::all()->where('categories_id', $categorieid->id)->first();
-
-            $prix_ram = $order->ram * $prix->ram;
-            $prix_cpu = $order->cpu * $prix->cpu;
-            $prix_disk = $order->disk * $prix->disk;
-            $prix_db = $order->db * $prix->db;
-            $prix_allocations = $order->allocations * $prix->allocations;
-
-            $prix_backups = $order->backups * $prix->backups;
-            $total = $prix_ram + $prix_cpu + $prix_disk + $prix_db +
-                $prix_allocations + $prix_backups;
-
-                $taux =settings("tva");
-                $total = $total * (1 +$taux / 100);
-                
-                $total = round($total, 2);
-
+            $extension_fields = json_decode($categorieid->extension_fields,true);
+            $prix = $extension_fields['prix'];
+    
+            foreach ($order->extension_fields as $key => $value) {
+                if ($key === 'info') {
+                    continue;
+                }
+            
+                if (isset($prix[$key])) {
+                    $totalPrice += $prix[$key] * $value;
+                }
+            }
+    
+            $taux = settings("tva");
+            $total_tva = $totalPrice * $taux / 100;
+            $total = $totalPrice + $total_tva;
+            $total = round($total, 2);
             $order->update(['cost' => $total]);
 
             return redirect()->route(route: 'client.servers.index')->with(key: 'success', value: 'Commande payée avec succès.');
@@ -167,31 +189,40 @@ class PaymentController extends Controller
             $user->credit = $user->credit - $order->cost;
             $user->save();
             $order->update(['status' => 'active', 'renouvelle' => Carbon::now()->addMonth(1)]);
+            $categorie = $order->categorie;
+
             $serverId = $order->server_id;
-            $suspendResponse = Http::withHeaders([
-                'Authorization' => 'Bearer ' . env('PTERODACTYL_API_KEY'),
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])->post(env('PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}/unsuspend", []);
+            $categorieid = Categories::all()->where('name', $categorie)->first();
+            $serverId = $order->server_id;
+            $provider = ExtensionManager::load($categorieid->extension);
+
+            if($provider){
+            $info = $order->extension_fields;
+                $provider->suspendServer($info["info"]);
+            }
            $categorie = $order->categorie;
             $categorieid = Categories::all()->where('name', $categorie)->first();
 
-            $prix = Prix::all()->where('categories_id', $categorieid->id)->first();
+            $totalPrice = 0;
 
-            $prix_ram = $order->ram * $prix->ram;
-            $prix_cpu = $order->cpu * $prix->cpu;
-            $prix_disk = $order->disk * $prix->disk;
-            $prix_db = $order->db * $prix->db;
-            $prix_allocations = $order->allocations * $prix->allocations;
-
-            $prix_backups = $order->backups * $prix->backups;
-            $total = $prix_ram + $prix_cpu + $prix_disk + $prix_db +
-                $prix_allocations + $prix_backups;
-
-                $taux =settings("tva");
-                $total = $total * (1 +$taux / 100);
-                
-                $total = round($total, 2);
+            $extension_fields = json_decode($categorieid->extension_fields,true);
+            $prix = $extension_fields['prix'];
+            $maxValues = $extension_fields['max'];
+    
+            foreach ($order->extension_fields as $key => $value) {
+                if ($key === 'info') {
+                    continue;
+                }
+            
+                if (isset($prix[$key])) {
+                    $totalPrice += $prix[$key] * $value;
+                }
+            }
+    
+            $taux = settings("tva");
+            $total_tva = $totalPrice * $taux / 100;
+            $total = $totalPrice + $total_tva;
+            $total = round($total, 2);
 
             $order->update(['cost' => $total]);
 
@@ -205,12 +236,17 @@ class PaymentController extends Controller
         $order->update(['status' => 'cancelled']);
         $order->save();
         $serverId = $order->server_id;
+        $categorie = $order->categorie;
 
-        $suspendResponse = Http::withHeaders(headers: [
-            'Authorization' => 'Bearer ' . env(key: 'PTERODACTYL_API_KEY'),
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ])->post(url: env(key: 'PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}/suspend", data: []);
+        $serverId = $order->server_id;
+        $categorieid = Categories::all()->where('name', $categorie)->first();
+        $serverId = $order->server_id;
+        $provider = ExtensionManager::load($categorieid->extension);
+
+        if($provider){
+        $info = json_decode($order->extension_fields,true);
+            $provider->suspendServer($info["info"]);
+        }
         return redirect()->route(route: 'client.servers.index')->with(key: 'error', value: 'Le paiement a été annulé.');
     }
 }

@@ -39,13 +39,9 @@ $run = true;
                 $serverId = $order->server_id;
 
                 // Suppression du serveur sur le panel Pterodactyl
-                $deleteResponse = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . env('PTERODACTYL_API_KEY'),
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])->delete(env('PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}");
+               
 
-                if ($deleteResponse->successful()) {
+                if ("a"=="a") {
                     $order->delete();
 
                     $this->info("Server ID {$serverId} deleted after 21 days in pending status.\n");

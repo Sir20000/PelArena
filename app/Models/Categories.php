@@ -25,6 +25,8 @@ class Categories extends Model
         'maxallocations',
         'maxbyuser',
         'stock',
+        'extension',
+
         'extension_fields', // new JSON column for dynamic fields
     ];
 

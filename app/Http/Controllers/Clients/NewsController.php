@@ -16,9 +16,9 @@ class NewsController extends Controller
         $news = News::all();
 
 // Récupère tous les prix liés aux catégories sélectionnées
-$categories = Categories::with('prix')->take(4)->get(); // Eager loading des prix
+//$categories = Categories::with('prix')->take(4)->get(); // Eager loading des prix
 
-return view('welcome', compact('url', 'news', 'categories',));
+return view('welcome', compact('url', 'news', ));
     }
 
     public function show($id)

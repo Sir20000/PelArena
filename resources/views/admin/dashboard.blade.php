@@ -80,6 +80,11 @@
                             <input type="number" name="tva" id="tva" value="{{$settings['tva']}}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-indigo-500" required>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Entrez le pourcentage de TVA appliqué à vos transactions.</p>
                         </div>
+                        <div class="form-group">
+                            <label for="seo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Seo</label>
+                            <textarea type="text" name="seo" id="seo" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-indigo-500" required >{{$settings['seo']}}</textarea>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Entrez le pourcentage de TVA appliqué à vos transactions.</p>
+                        </div>
                     </div>
                 </div>
 

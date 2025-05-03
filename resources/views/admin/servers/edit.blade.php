@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold mb-6">Modifier le server</h1>
@@ -59,7 +59,7 @@
 
 
 
-                        <div class="flex items-center">
+                        <div>
 
                             <label for="status">Status du server :</label>
 
@@ -81,6 +81,7 @@
                             <li>Allocations : {{$server->allocations}}</li>
                             <li>Backups : {{$server->backups}}</li>
                             <li>DB : {{$server->db}}</li>
+                            <li>Apartient a: <a href="{{ route('admin.users.edit', $server->user->id)}}">{{$server->user->email}}</a></li>
 
                         </div>
                 </div>

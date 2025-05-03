@@ -12,7 +12,6 @@ use App\Http\Controllers\Clients\CreditsController;
 use App\Http\Controllers\Utils\PaymentController;
 use App\Http\Controllers\Clients\NewsController;
 use App\Http\Controllers\Clients\LegalController;
-Route::get('/', [NewsController::class, 'index', ])->name('welcome');
 
 Route::get('/terms', [LegalController::class , 'terms'])->name('terms');
 Route::get('/privacy',[LegalController::class , 'privacy'] )->name('privacy');

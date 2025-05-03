@@ -32,6 +32,22 @@
 
         ],
     ];
+    use App\Extensions\ExtensionManager;
+    foreach (ExtensionManager::getAdminMenuExtensions() as $key => $menu) {
+    // Accéder à l'élément 'PterodactylExtension' dans le tableau
+    foreach ($menu as $subKey => $subMenu) {
+        if (isset($subMenu['route'])) {
+            $categories[$subMenu['categorie']][$subMenu['route']] = [
+                'icon' => $subMenu['icon'],
+                'label' => $subMenu['label'],
+                'permission' => $user && $user->hasAccess($subMenu['route']),
+            ];
+        } else {
+            Log::warning("Menu item missing 'route' key", ['menu' => $subMenu]);
+        }
+    }
+}
+
 @endphp
 
 @foreach (['desktop' => 'hidden sm:flex fixed left-10 mt-10 top-1/2 transform -translate-y-1/2 w-[250px]', 'mobile' => 'flex  sm:hidden w-full items-center justify-center mt-4'] as $device => $classes)

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta name="description" content="{{settings('seo')}}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
     <!-- Fonts -->
@@ -22,7 +22,7 @@
         <div class="flex justify-between items-center">
             <div class="shrink-0 flex items-center">
                 <div class="item">
-                    <img src="/favicon.ico" height="28px" width="28px" />
+                    <img src="/favicon.ico" alt='favicon' height="28px" width="28px" />
                 </div>
                 <div class="item">
                     <a href="{{ route('dashboard') }}" class="flex items-center">
@@ -73,6 +73,7 @@
             </div>
         </div>
     </div>
+    @if(!empty($categories))
     <div class="container mx-auto p-6">
         <h1 class="text-3xl font-bold mb-4">Offers</h1>
         <div class="grid xl:grid-cols-4 grid-cols-1 gap-4">
@@ -83,7 +84,7 @@
             @endphp
 
             <div class="bg-gradient-to-r from-blue-200 to-sky-200  flex p-6 shadow-md text-white text-center rounded-xl  transition-colors delay-100 flex-col items-center">
-            <img class=" mb-2 h-8 w-8" src="{{ $categorie->image}}" />
+            <img class=" mb-2 h-8 w-8" alt="{{ $categorie->name }} IMAGE" src="{{ $categorie->image}}" />
             <div class="h-24">    
             <h2 class="text-lg font-bold mb-2">{{ $categorie->name }}</h2>
                 <p class="text-sm text-gray-50 mb-4">
@@ -102,6 +103,7 @@
             @endforeach
         </div>
     </div>
+    @endif
     <div class="container mx-auto p-6 sm:mb-16 mb-32">
         <h1 class="text-3xl font-bold mb-4">News</h1>
         <div class="grid xl:grid-cols-2 grid-cols-1 gap-4">
@@ -129,12 +131,12 @@
 
 <footer class="fixed bottom-0 left-0 w-full  bg-gray-100 ">
     <div class=" mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <ul class="flex space-x-8">
+        <div class="flex space-x-8">
             <p class="text-gray-700 "> &copy; Copyright {{ now()->year }} {{ env('APP_NAME') }}. All rights reserved.</p>
-            <li><a href="{{ route('terms') }}" class="text-black hover:text-blue-500 transition-all">Terms and Conditions</a></li>
-            <li><a href="{{ route('privacy') }}" class="text-black hover:text-blue-500 transition-all">Privacy Policy</a></li>
-            <li><a href="{{ route('legal') }}" class="text-black hover:text-blue-500 transition-all">Legal Notice</a></li>
-        </ul>
+            <p><a href="{{ route('terms') }}" class="text-black hover:text-blue-500 transition-all">Terms and Conditions</a></p>
+            <p><a href="{{ route('privacy') }}" class="text-black hover:text-blue-500 transition-all">Privacy Policy</a></p>
+            <p><a href="{{ route('legal') }}" class="text-black hover:text-blue-500 transition-all">Legal Notice</a></p>
+</div>
         <div class="flex items-center space-x-4">
             <a href="https://uptime.kantumhost.fr" target="_blank" class="text-gray-800 dark:text-white hover:text-green-500" title="Uptime">
                 <i class="ri-time-line text-xl"></i>

@@ -7,8 +7,9 @@ class ExtensionField
 
     public static function register(string $extension, array $fields): void
     {
-        static::$fields[$extension] = $fields;
+        static::$fields[$extension] = array_merge(static::$fields[$extension] ?? [], $fields);
     }
+    
 
     public static function getFields(string $extension): array
     {

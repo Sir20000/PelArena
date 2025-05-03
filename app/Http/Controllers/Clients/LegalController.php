@@ -10,16 +10,16 @@ class LegalController extends Controller
     public function legal(Request $request)
     {
         $legal = settings("legal");
-        return view('clients.legal', compact('legal'));
+        return view('client.legal', compact('legal'));
     }
     public function terms(Request $request)
     {
         $terms = settings("terms");
-        return view('clients.terms', compact('terms'));
+        return view('client.terms', compact('terms'));
     }
     public function privacy(Request $request)
     {
         $privacy = settings("privacy");
-        return view('clients.privacy', compact('privacy'));
+        return view('client.privacy', compact('privacy'));
     }
 }

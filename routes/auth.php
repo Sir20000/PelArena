@@ -52,9 +52,10 @@ Route::middleware('auth')->group(function () {
         ->name('verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
+        ->name('a.password.confirm.show');
 
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store'])->name('a.password.confirm.store'); // <- ajoute un nom unique ici aussi
+    ;
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 

@@ -7,7 +7,9 @@ use App\Http\Middleware\Ensure2FAEnabled;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\CheckUserDisabled;
 use App\Http\Middleware\ApiMiddleware;
+use App\Http\Controllers\Clients\NewsController;
 
+Route::get('/', [NewsController::class, 'index', ])->name('welcome');
 
 
 Route::middleware(['auth', CheckUserDisabled::class,Ensure2FAEnabled::class])->group(function () {

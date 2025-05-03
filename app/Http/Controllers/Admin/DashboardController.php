@@ -32,6 +32,7 @@ class DashboardController extends Controller
             'PTERODACTYL_API_URL' => 'required|url|max:255',
             'PTERODACTYL_API_KEY' => 'required|string|max:255',
             'PTERODACTYL_API_KEY_CLIENT' => 'required|string|max:255',
+            'seo'=> 'required|string|max:255',
 
             'tva' => 'required|integer|min:0|max:100',
             'affiliationget' => 'required|integer|min:0',
@@ -86,6 +87,8 @@ class DashboardController extends Controller
         DB::table('settings')->updateOrInsert(['name' => 'alert_color_text'], ['settings' => $request->alert_color_text]);
         DB::table('settings')->updateOrInsert(['name' => 'alert_color_data'], ['settings' => $request->alert_color_data]);
         DB::table('settings')->updateOrInsert(['name' => 'alert_color_icon'], ['settings' => $request->alert_color_icon]);
+        DB::table('settings')->updateOrInsert(['name' => 'seo'], ['settings' => $request->seo]);
+
         // Si `env` est égal à 1, mettre à jour le fichier `.env`
         $this->updateEnv([
             'APP_NAME' => $request->APP_NAME,

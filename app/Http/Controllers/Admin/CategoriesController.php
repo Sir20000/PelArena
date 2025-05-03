@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Extensions\ExtensionManager;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Categories;
 use App\Http\Controllers\Utils\PterodactylController;
-use Illuminate\Support\Facades\Log;
+
 use App\Models\Prix;
+use App\Models\Categories;
+use App\Models\ServerOrder;
+
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 
 class CategoriesController extends Controller
@@ -26,9 +30,9 @@ class CategoriesController extends Controller
     public function create()
 
     {
-        $nodes = PterodactylController::getNodes();
+        $extensions = ExtensionManager::getExtensions();
 
-        return view('admin.categorie.create', compact('nodes'));
+        return view('admin.categorie.create', compact('extensions'));
     }
     
     /**
@@ -40,44 +44,39 @@ class CategoriesController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'nullable', // Ajout de la validation pour l'image
-            'egg_id' => 'required|integer',
-            'nests' => 'required|integer',
-            'maxram' => 'required|integer',
-            'maxcpu' => 'required|integer',
-            'maxstorage' => 'required|integer',
-            'maxdb' => 'required|integer',
-            'maxbackups' => 'required|integer',
-            'maxallocations' => 'required|integer',
             'maxbyuser' => 'required|integer',
             'stock' => 'required|integer',
+            'extension'=>'required|string|max:255',
+            'max' => 'required|array',
+        'prix' => 'required|array',
+        'info' => 'required|array',
+
         ]);
+        foreach ($request->input('max') as $index => $value) {
+            $customFields['max'][$index] = $value;
+        }
+    
+        foreach ($request->input('prix') as $index => $value) {
+            $customFields['prix'][$index] = $value;
+        }
+        foreach ($request->input('info') as $index => $value) {
+            $customFields['info'][$index] = $value;
+        }
+        $validatedData['extension'] = $request->input('extension');
+
+        // Ajouter le champ custom_fields au modèle
+        $validatedData['extension_fields'] = json_encode($customFields);
+    
         $category = Categories::create($validatedData);
-        $priceData = $request->validate([
-            'ram' => 'required|numeric|min:0',
-            'cpu' => 'required|numeric|min:0',
-            'storage' => 'required|numeric|min:0',
-            'db' => 'required|numeric|min:0',
-            'backups' => 'required|numeric|min:0',
-            'allocations' => 'required|numeric|min:0',
-         ]);
-        log::debug("d");
-        $priceData['categories_id'] = $category->id;
-        log::debug("sb");
-        Prix::create($priceData);
-        log::debug("saa");
+       
+       
         return redirect()->route('admin.categorie.index')->with('success', 'Prix ajouté avec succès.');
     }
     
     /**
      * Affiche un prix spécifique.
      */
-    public function show(Categories $id)
-    {
-        $category = $id;
-        $selectedNodes = json_decode($category->nodes, true); // Décoder les nodes enregistrés
-    
-        return view('admin.categorie.show', compact('category', 'selectedNodes'));
-    }
+
     
     
     /**
@@ -85,44 +84,48 @@ class CategoriesController extends Controller
      */
     public function edit(Categories $id)
     {
-    $prix = Prix::where("categories_id",$id->id)->first();
-    
-        return view('admin.categorie.edit', compact('id','prix'));
+    $server = ServerOrder::where("categorie",$id->name)->get();
+    $extensions = ExtensionManager::getExtensions();
+    $fields = json_decode($id->extension_fields, true);
+
+
+        return view('admin.categorie.edit', compact('id','server','extensions','fields'));
     }
     /**
      * Met à jour un prix existant.
      */
     public function update(Request $request, Categories $id)
     {
-        
+
         $category = Categories::findOrFail($id->id);
 
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'nullable', // Ajout de la validation pour l'image
-            'egg_id' => 'required|integer',
-            'nests' => 'required|integer',
-            'maxram' => 'required|integer',
-            'maxcpu' => 'required|integer',
-            'maxstorage' => 'required|integer',
-            'maxdb' => 'required|integer',
-            'maxbackups' => 'required|integer',
-            'maxallocations' => 'required|integer',
             'maxbyuser' => 'required|integer',
             'stock' => 'required|integer',
-        ]);
+            'max' => 'required|array',
+        'prix' => 'required|array',
+        'info' => 'required|array',
+    
+    ]);
+        foreach ($request->input('max') as $index => $value) {
+            $customFields['max'][$index] = $value;
+        }
+    
+        foreach ($request->input('prix') as $index => $value) {
+            $customFields['prix'][$index] = $value;
+        }
+        foreach ($request->input('info') as $index => $value) {
+            $customFields['info'][$index] = $value;
+        }
+        $validatedData['extension'] = $request->input('extension');
+
+        $validatedData['extension_fields'] = json_encode($customFields);
         $category->update($validatedData);
-        $priceData = $request->validate([
-            'ram' => 'required|numeric|min:0',
-            'cpu' => 'required|numeric|min:0',
-            'storage' => 'required|numeric|min:0',
-            'db' => 'required|numeric|min:0',
-            'backups' => 'required|numeric|min:0',
-            'allocations' => 'required|numeric|min:0',
-         ]);
-         $prix = Prix::where('categories_id', $id->id)->firstOrFail();
-         $prix->update($priceData);
+        
+              
+
         return redirect()->route('admin.categorie.index')->with('success', 'category mis à jour avec succès.');
     }
     

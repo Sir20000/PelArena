@@ -44,9 +44,9 @@ Route::prefix('coupons')->group(function () {
     Route::get('/create', [CouponController::class, 'create'])->name('admin.coupons.create');
     Route::get('/{coupon}', [CouponController::class, 'show'])->name('admin.coupons.show');
     Route::get('/{coupon}/edit', [CouponController::class, 'edit'])->name('admin.coupons.edit');
-    
+
     Route::delete('/{coupon}', [CouponController::class, 'destroy'])->name('admin.coupons.destroy');
-    
+
     Route::post('/{coupon}/update', [CouponController::class, 'update'])->name('admin.coupons.update');
     Route::post('/store', [CouponController::class, 'store'])->name('admin.coupons.store');
 });
@@ -94,7 +94,6 @@ Route::prefix('news')->group(function () {
     Route::get('/edit/{id}', [NewsController::class, 'edit'])->name('admin.news.edit');
 
     Route::post('/update/{id}', [NewsController::class, 'update'])->name('admin.news.update');
-
 });
 
 Route::prefix('roles')->group(function () {
@@ -108,7 +107,6 @@ Route::prefix('roles')->group(function () {
 
 Route::prefix('analyse')->group(function () {
     Route::get('/', [StatistiqueController::class, 'index'])->name('admin.statistique.index');
-   
 });
 
 Route::prefix('api')->group(function () {

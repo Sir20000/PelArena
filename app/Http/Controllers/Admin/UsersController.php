@@ -7,7 +7,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Categories;
+use App\Models\Role;
+
+use App\Models\ServerOrder;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
@@ -42,8 +44,10 @@ class UsersController extends Controller
      * Affiche un prix spécifique.
      */
     public function show(User $id)
+
     {
-        return view('admin.users.show', compact('id'));
+        $server = ServerOrder::where("user_id",$id->id);
+        return view('admin.users.show', compact('id','server'));
     }
 
     /**
@@ -52,7 +56,9 @@ class UsersController extends Controller
     public function edit(User $id)
     {
         $user = $id;
-        return view('admin.users.edit', compact('user'));
+        $server = ServerOrder::where("user_id",$user->id)->get();
+$roles = Role::all();
+        return view('admin.users.edit', compact('user','server','roles'));
     }
 
     public function update(Request $request, User $id)
