@@ -30,12 +30,13 @@ class Categories extends Model
         'extension_fields', // new JSON column for dynamic fields
     ];
 
-    public function prix()
-    {
-        return $this->hasMany(Prix::class, 'categories_id');
-    }
-
+ 
     protected $casts = [
         'extension_fields' => 'array', // cast JSON to array
     ];
+      public function products()
+    {
+        return $this->hasMany(Product::class, 'categorie', 'id'); 
+        // Adapte les noms des colonnes si besoin
+    }
 }

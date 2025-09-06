@@ -63,7 +63,6 @@ public function update(Request $request, ServerOrder $id)
         // Validation des champs du formulaire
         $request->validate([
             'name' => 'required|string|max:255',
-            'server_id' => 'required|integer|min:0',
             'status' => 'required|string|in:pending,active,suspendu,cancelled',
             
         ]);
@@ -121,10 +120,10 @@ public function update(Request $request, ServerOrder $id)
 /**
  * Supprime un admin.prix.
  */
-public function destroy(ServerOrder $prix)
+public function destroy(ServerOrder $id)
 {
-    $prix->delete();
+    $id->delete();
 
-    return redirect()->route('admin.servers.index')->with('success', 'Prix supprimé avec succès.');
+    return redirect()->route('admin.servers.index')->with('success', 'Server supprimé avec succès.');
 }
 }

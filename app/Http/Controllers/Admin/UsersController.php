@@ -70,7 +70,6 @@ $roles = Role::all();
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
-                'pterodactyl_user_id' => 'required|integer|min:0',
                 'credit' => 'required|integer|min:0',
                 'affiliate_code' => 'nullable|string|max:255',
                 'role_id' => 'required|integer|min:0',
@@ -113,9 +112,9 @@ $roles = Role::all();
     /**
      * Supprime un admin.prix.
      */
-    public function destroy(User $prix)
+    public function destroy(User $id)
     {
-        $prix->delete();
+        $id->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'Prix supprimé avec succès.');
     }

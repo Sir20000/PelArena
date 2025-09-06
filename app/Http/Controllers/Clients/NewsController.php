@@ -6,20 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use Illuminate\Http\Request;
 use App\Models\News;
-use App\Models\Prix;
 
 class NewsController extends Controller
 {
-    public function index()
-    {
-        $url = settings("PTERODACTYL_API_URL");
-        $news = News::all();
+public function index()
+{
+    $url = "";
+    $news = News::all();
 
-// Récupère tous les prix liés aux catégories sélectionnées
-//$categories = Categories::with('prix')->take(4)->get(); // Eager loading des prix
+    // Récupérer les 4 catégories avec leurs produits (eager loading)
+    $categories = Categories::with('products')->take(4)->get();
 
-return view('welcome', compact('url', 'news', ));
+    // Pour chaque catégorie, on calcule le prix minimal parmi ses produits
+    foreach ($categories as $categorie) {
+        // On récupère le prix minimal des produits liés à cette catégorie
+        $categorie->min_price = $categorie->products->min('price') ?? 0;
     }
+
+    return view('welcome', compact('url', 'news', 'categories'));
+}
 
     public function show($id)
     {

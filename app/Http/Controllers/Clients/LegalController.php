@@ -14,12 +14,12 @@ class LegalController extends Controller
     }
     public function terms(Request $request)
     {
-        $terms = settings("terms");
+        $terms = settings("tos");
         return view('client.terms', compact('terms'));
     }
     public function privacy(Request $request)
     {
-        $privacy = settings("privacy");
+        $privacy = settings("privacypolitique");
         return view('client.privacy', compact('privacy'));
     }
 }

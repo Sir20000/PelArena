@@ -5,7 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\ServerOrder;
 use Illuminate\Support\Facades\Http;
-
+use App\Extensions\ExtensionManager;
+Use App\Models\Product;
 class SuspendServersOnDueDate extends Command
 {
     /**
@@ -50,19 +51,18 @@ class SuspendServersOnDueDate extends Command
             } else {
                 $order->update(['status' => 'pending']);
 
-                $serverId = $order->server_id;
+                $productId = $order->product_id;
 
-                // Appel à l'API Pterodactyl pour suspendre le serveur
-                $suspendResponse = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . env('PTERODACTYL_API_KEY'),
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])->post(env('PTERODACTYL_API_URL') . "/api/application/servers/{$serverId}/suspend");
+                $product = Product::find($productId);
 
-                if ($suspendResponse->successful()) {
-                } else {
-                    $this->error("Failed to suspend server ID {$serverId}.");
-                }
+                   $provider = ExtensionManager::load($product->extension);
+
+        if ($provider) {
+            $provider->suspendServer($order->extension_fields["info"]);
+
+        }
+
+               
             }
             $bar->advance();
         }

@@ -10,7 +10,7 @@ use App\Models\Categories;
 use App\Models\Prix;
 use App\Models\Trensaction;
 use App\Extensions\ExtensionManager;
-
+use App\Models\Product;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -29,44 +29,35 @@ class PaymentController extends Controller
 
         if ($order->cost == 0) {
             $categorie = $order->categorie;
+            $product = $order->product_id;
 
             $categorieid = Categories::all()->where('name', $categorie)->first();
+            $product = Product::all()->where('id', $product)->first();
 
 
             $order->update(['status' => 'active', 'renouvelle' => Carbon::now()->addMonth(1)]);
             $serverId = $order->server_id;
-
-            $provider = ExtensionManager::load($categorieid->extension);
+   $provider = ExtensionManager::load($product->extension);
 
             if($provider){
-                $info = json_decode($order->extension_fields,true);
-                $provider->suspendServer($info["info"]);
-
+            $info = $order->extension_fields;
+               $corder = $provider->unsuspendServer($info["info"]);
             }
+           log::debug($corder);
            
+   Trensaction::create([
+                "cost" => $order->cost,
+                "user_id" => auth()->id(),
+                "product" => "serveur",
+                "server_order_id" => $order->id,
+            ]);
 
-
-
-            $totalPrice = 0;
-
-        $extension_fields = json_decode($categorie->extension_fields,true);
-        $prix = $extension_fields['prix'];
-        $maxValues = $extension_fields['max'];
-
-        foreach ($order->extension_fields as $key => $value) {
-            if ($key === 'info') {
-                continue;
-            }
-        
-            if (isset($prix[$key])) {
-                $totalPrice += $prix[$key] * $value;
-            }
-        }
-
+        $prix = $product->price;
         $taux = settings("tva");
-        $total_tva = $totalPrice * $taux / 100;
-        $total = $totalPrice + $total_tva;
+        $total_tva = $prix * $taux / 100;
+        $total = $prix + $total_tva;
         $total = round($total, 2);
+
             $order->update(['cost' => $total]);
 
             return redirect()->route(route: 'client.servers.index')->with(key: 'success', value: 'Commande payée avec succès.');
@@ -128,19 +119,11 @@ class PaymentController extends Controller
                 'status' => 'active',
                 'renouvelle' => $order->renouvelle ? Carbon::parse($order->renouvelle)->addMonth(1) : Carbon::now()->addMonth(1),
             ]);
-            $categorie = $order->categorie;
 
-            $categorieid = Categories::all()->where('name', $categorie)->first();
-            $serverId = $order->server_id;
-            $provider = ExtensionManager::load($categorieid->extension);
+        $productId = $order->product_id;
+$product = Product::find($productId);
 
-            if($provider){
-                // Vérifier si extension_fields est un tableau ou un objet
-                $info = is_array($order->extension_fields) ? $order->extension_fields : json_decode($order->extension_fields, true);
-                
-                // Utiliser les données pour suspendre le serveur
-                $provider->suspendServer($info["info"]);
-            }
+Log::debug($product);
             Trensaction::create([
                 "cost" => $order->cost,
                 "user_id" => auth()->id(),
@@ -148,21 +131,16 @@ class PaymentController extends Controller
                 "server_order_id" => $order->id,
             ]);
             $categorie = $order->categorie;
-            $categorieid = Categories::where('name', $categorie)->first();
-            $totalPrice = 0;
+            $totalPrice = $product->price;
 
-            $extension_fields = json_decode($categorieid->extension_fields,true);
-            $prix = $extension_fields['prix'];
-    
-            foreach ($order->extension_fields as $key => $value) {
-                if ($key === 'info') {
-                    continue;
-                }
-            
-                if (isset($prix[$key])) {
-                    $totalPrice += $prix[$key] * $value;
-                }
+
+       $provider = ExtensionManager::load($product->extension);
+
+            if($provider){
+            $info = $order->extension_fields;
+               $corder = $provider->unsuspendServer($info["info"]);
             }
+           log::debug($corder);
     
             $taux = settings("tva");
             $total_tva = $totalPrice * $taux / 100;

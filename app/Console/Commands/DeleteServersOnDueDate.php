@@ -5,7 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\ServerOrder;
 use Illuminate\Support\Facades\Http;
-
+use App\Models\Product;
+use App\Extensions\ExtensionManager;
 class DeleteServersOnDueDate extends Command
 {
     /**
@@ -40,7 +41,16 @@ $run = true;
 
                 // Suppression du serveur sur le panel Pterodactyl
                
+    $productId = $order->product_id;
 
+                $product = Product::find($productId);
+
+                   $provider = ExtensionManager::load($product->extension);
+
+        if ($provider) {
+            $provider->deleteServer($order->extension_fields["info"]);
+
+        }
                 if ("a"=="a") {
                     $order->delete();
 

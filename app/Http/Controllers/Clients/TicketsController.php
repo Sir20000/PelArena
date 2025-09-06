@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class TicketsController extends Controller
 {
@@ -40,13 +41,47 @@ class TicketsController extends Controller
             'description' => 'required|string',
         ]);
 
-        Ticket::create([
+        $ticket = Ticket::create([
             'category_id' => $request->category_id,
             'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
         ]);
+    $webhookUrl = settings('webhook_ticket'); // Récupère le webhook depuis les settings
 
+    if ($webhookUrl) {
+        $embed = [
+            'title' => '📩 Nouveau ticket ouvert',
+            'color' => hexdec('7289DA'), // Bleu Discord
+            'fields' => [
+                [
+                    'name' => '🎫 Titre',
+                    'value' => $ticket->title,
+                    'inline' => false
+                ],
+                [
+                    'name' => '📝 Description',
+                    'value' => $ticket->description,
+                    'inline' => false
+                ],
+                [
+                    'name' => '🔗 Lien',
+                    'value' => route('tickets.show', $ticket->id),
+                    'inline' => false
+                ],
+            ],
+            'footer' => [
+                'text' => 'Système de tickets',
+            ],
+            'timestamp' => now()->toIso8601String(),
+        ];
+
+        Http::post($webhookUrl, [
+            'embeds' => [$embed],
+            'username' => 'Ticket Bot',
+            'avatar_url' => 'https://i.imgur.com/4M34hi2.png', // Avatar personnalisé (facultatif)
+        ]);
+    }
         return redirect()->route('tickets.index')->with('success', 'Ticket ouvert avec succès!');
     }
 

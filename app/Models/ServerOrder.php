@@ -22,7 +22,8 @@ class ServerOrder extends Model
                             'server_id',
                             'renouvelle',
                             'categorie',
-                            'extension_fields'
+                            'extension_fields',
+                            "product_id"
                           ];
     protected $casts =    [
                             'renouvelle' => 'datetime',

@@ -29,9 +29,6 @@ class DashboardController extends Controller
         $request->validate([
             'APP_NAME' => 'required|string|max:255',
             'APP_URL' => 'required|url|max:255',
-            'PTERODACTYL_API_URL' => 'required|url|max:255',
-            'PTERODACTYL_API_KEY' => 'required|string|max:255',
-            'PTERODACTYL_API_KEY_CLIENT' => 'required|string|max:255',
             'seo'=> 'required|string|max:255',
 
             'tva' => 'required|integer|min:0|max:100',
@@ -46,7 +43,8 @@ class DashboardController extends Controller
             "alert_color_bg"=> "required|string",
             "alert_color_text"=> "required|string",
             "alert_color_data"=> "required|string",
-            "alert_color_icon"=> "required|string"
+            "alert_color_icon"=> "required|string",
+            'webhook_ticket'=> 'required|string',
             
         ]);
 
@@ -56,10 +54,6 @@ class DashboardController extends Controller
         // Mise à jour des valeurs dans la base de données
         DB::table('settings')->updateOrInsert(['name' => 'APP_NAME'], ['settings' => $request->APP_NAME]);
         DB::table('settings')->updateOrInsert(['name' => 'APP_URL'], ['settings' => $request->APP_URL]);
-
-        DB::table('settings')->updateOrInsert(['name' => 'PTERODACTYL_API_URL'], ['settings' => $request->PTERODACTYL_API_URL]);
-        DB::table('settings')->updateOrInsert(['name' => 'PTERODACTYL_API_KEY'], ['settings' => $request->PTERODACTYL_API_KEY]);
-        DB::table('settings')->updateOrInsert(['name' => 'PTERODACTYL_API_KEY_CLIENT'], ['settings' => $request->PTERODACTYL_API_KEY_CLIENT]);
 
         DB::table('settings')->updateOrInsert(['name' => 'tva'], ['settings' => $request->tva]);
         DB::table('settings')->updateOrInsert(['name' => 'affiliationget'], ['settings' => $request->affiliationget]);
@@ -88,14 +82,12 @@ class DashboardController extends Controller
         DB::table('settings')->updateOrInsert(['name' => 'alert_color_data'], ['settings' => $request->alert_color_data]);
         DB::table('settings')->updateOrInsert(['name' => 'alert_color_icon'], ['settings' => $request->alert_color_icon]);
         DB::table('settings')->updateOrInsert(['name' => 'seo'], ['settings' => $request->seo]);
+        DB::table('settings')->updateOrInsert(['name' => 'webhook_ticket'], ['settings' => $request->webhook_ticket]);
 
         // Si `env` est égal à 1, mettre à jour le fichier `.env`
         $this->updateEnv([
             'APP_NAME' => $request->APP_NAME,
             'APP_URL' => $request->APP_URL,
-            'PTERODACTYL_API_URL' => $request->PTERODACTYL_API_URL,
-            'PTERODACTYL_API_KEY' => $request->PTERODACTYL_API_KEY,
-            'PTERODACTYL_API_KEY_CLIENT' => $request->PTERODACTYL_API_KEY_CLIENT,
             'PAYPAL_MODE' => $request->PAYPAL_MODE,
             'PAYPAL_SANDBOX_CLIENT_ID' => $request->PAYPAL_SANDBOX_CLIENT_ID,
             'PAYPAL_SANDBOX_CLIENT_SECRET' => $request->PAYPAL_SANDBOX_CLIENT_SECRET,
@@ -130,4 +122,5 @@ class DashboardController extends Controller
         $base_path = base_path();
         $result = Process::run('cd ' . $base_path . ' && composer dump-autoload');
     }
+    
 }
