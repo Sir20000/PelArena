@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             
             ['name' => 'APP_NAME', 'settings' => 'My Application', 'env' => 1],
             ['name' => 'APP_URL', 'settings' => 'http://example.com', 'env' => 1],
+            ['name' => 'PTERODACTYL_API_URL', 'settings' => 'https://api.example.com', 'env' => 1],
+            ['name' => 'PTERODACTYL_API_KEY', 'settings' => 'your_api_key', 'env' => 1],
             ['name' => 'tva', 'settings' => '0', 'env' => 0],
             ['name' => 'affiliationget', 'settings' => '5', 'env' => 0],
             ['name' => 'affiliationrecived', 'settings' => '5', 'env' => 0],
@@ -62,8 +64,6 @@ Hébergeur : OVH, 2 Rue Kellermann, 59100 Roubaix, France', 'env' => 0],
 ['name'=> 'alert_color_text','settings'=>"white","env"=>0],
 ['name'=> 'alert_color_data','settings'=>"O","env"=>0],
 ['name'=> 'alert_color_icon','settings'=>"ri-information-line","env"=>0],
-['name'=>'seo','settings'=>'Your seo',"env"=>0],
-['name'=>'webhook_ticket','settings'=>'https://discord',"env"=>0],
 
 ];
         $defaultCategoriTicket = [
