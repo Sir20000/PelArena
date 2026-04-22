@@ -1,0 +1,1 @@
+<h1>Extension Proxmox : dashboard</h1>
