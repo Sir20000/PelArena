@@ -1,72 +1,97 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent leading-tight">
-
-            {{ __('Dashboard admin') }}<br>
-
+        <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-600 via-green-400 to-purple-500 bg-clip-text text-transparent">
+            {{ __('Dashboard admin') }}
         </h2>
     </x-slot>
 
-  <x-admin.sidebar />
+    <x-admin.sidebar />
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+    <div class="py-10">
+        <div class="dark:text-white text-black max-w-7xl mx-auto space-y-6 sm:px-6 lg:px-8">
 
-
-                    <p class="mt-4 text-lg font-semibold">
-                        Revenu total pour ce mois : {{ number_format($currentMonthRevenue, 2, ',', ' ') }} €
+            {{-- STATS --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow">
+                    <p class="text-sm text-gray-500">Revenu du mois</p>
+                    <p class="text-2xl font-bold mt-2">
+                        {{ number_format($currentMonthRevenue, 2, ',', ' ') }} €
                     </p>
+                </div>
 
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold">Revenu par année</h3>
-                        <ul>
-                            @foreach ($revenuesByYear as $revenue)
-                            <li> {{ $revenue->year }} : {{ number_format($revenue->total_revenue, 2, ',', ' ') }} €</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow">
+                    <p class="text-sm text-gray-500 mb-3">Revenu par année</p>
+                    <ul class="space-y-1 text-sm">
+                        @foreach ($revenuesByYear as $revenue)
+                            <li class="flex justify-between">
+                                <span>{{ $revenue->year }}</span>
+                                <span class="font-semibold">
+                                    {{ number_format($revenue->total_revenue, 2, ',', ' ') }} €
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl mt-4">
-                <div class="p-4 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('admin.revenue.index') }}" method="GET" class="mb-3">
-                    <div class="input-group">
-                                <input type="text" name="search" class=" rounded-xl w-96" placeholder="Rechercher un serveur" value="{{ request('search') }}">
-                                <button type="submit" class=" bg-gray-400 w-10 h-10 rounded-xl "><i class="ri-search-2-line "></i></button>
-                            </div>
-                    </form>
-                </div>
+
+            {{-- SEARCH --}}
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow">
+                <form action="{{ route('admin.revenue.index') }}" method="GET" class="flex items-center gap-2">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="flex-1 rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+                        placeholder="Rechercher une transaction..."
+                        value="{{ request('search') }}"
+                    >
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl">
+                        <i class="ri-search-2-line "></i>
+                    </button>
+                </form>
             </div>
-            <div class="flex flex-wrap justify-start">
-                
-            @foreach ($transaction as $transactiona)
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl mt-16 min-h-56 min-w-80 mb-4 mr-11 ml-10">
-                <div class="p-4 text-gray-900 dark:text-gray-100">
-                    <div class="mt-2">
-                        <h3 class="text-lg font-semibold mb-6">Transaction</h3>
-                        <ul>
-                            <li>Montant : {{ number_format($transactiona->cost, 2, ',', '
-                    ') }} €</li>
-                            <li>Client : {{ $transactiona->user->name }}</li>
-                            <li>Produit : {{ $transactiona->product }}</li>
+
+            {{-- TRANSACTIONS --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($transaction as $transactiona)
+                    <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow hover:shadow-lg transition">
+
+                        <h3 class="text-lg font-semibold mb-4">Transaction</h3>
+
+                        <div class="space-y-2 text-sm">
+                            <p><span class="text-gray-500">Montant :</span> 
+                                <span class="font-semibold">
+                                    {{ number_format($transactiona->cost, 2, ',', ' ') }} €
+                                </span>
+                            </p>
+
+                            <p><span class="text-gray-500">Client :</span> {{ $transactiona->user->name }}</p>
+
+                            <p><span class="text-gray-500">Produit :</span> {{ $transactiona->product }}</p>
+
                             @if ($transactiona->server_order_id)
-
-                            <li><a href="{{ route('admin.servers.edit' , $transactiona->server_order_id) }}"> Server : {{ $transactiona->server_order_id }}</a></li>
+                                <p>
+                                    <span class="text-gray-500">Serveur :</span>
+                                    <a href="{{ route('admin.servers.edit', $transactiona->server_order_id) }}" 
+                                       class="text-blue-500 hover:underline">
+                                        #{{ $transactiona->server_order_id }}
+                                    </a>
+                                </p>
                             @endif
-                            <li>realise le : {{ $transactiona->created_at }}</li>
-                        </ul>
+
+                            <p class="text-xs text-gray-400 mt-3">
+                                {{ $transactiona->created_at->format('d/m/Y H:i') }}
+                            </p>
+                        </div>
+
                     </div>
-                </div>
+                @endforeach
             </div>
 
-            @endforeach
-            </div>
-            <div class="d-flex justify-content-center">
+            {{-- PAGINATION --}}
+            <div class="pt-4">
                 {{ $transaction->links() }}
             </div>
+
         </div>
     </div>
-
 </x-app-layout>

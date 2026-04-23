@@ -18,7 +18,7 @@
                             <h3 class="font-bold text-lg">Liste des roles</h3>
                         </div>
                         <div class="item2">
-                            <button onclick="window.location.href='{{ route('admin.roles.create') }}'" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" class="btn btn-success custom-success-button">Ajouter un role</button>
+                            <button onclick="window.location.href='{{ route('admin.roles.create') }}'" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs dark:text-white text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" class="btn btn-success custom-success-button">Ajouter un role</button>
                         </div>
                     </div>
                     @endif
@@ -29,9 +29,9 @@
                     <div class="space-y-4 mt-6 ">
                    
                         @foreach($roles as $p)
-                        <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md flex items-center justify-between">
+                        <div class="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-md flex items-center justify-between">
                             <div class="flex-1">
-                                <h3 class="text-lg font-medium text-black">Roles : {{ $p->name }}</h3>
+                                <h3 class="text-lg font-medium text-black dark:text-white">Roles : {{ $p->name }}</h3>
                                 <p class="text-gray-300">ID : {{ $p->id }}</p>
                             </div>
                             <div class="flex items-center space-x-2 ">

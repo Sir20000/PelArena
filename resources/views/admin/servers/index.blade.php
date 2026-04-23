@@ -16,7 +16,7 @@
                         <div class="item1">
                             <form action="{{ route('client.servers.index') }}" method="GET" class="">
                                 <div class="input-group px-4 py-2">
-                                    <input type="text" name="search" class=" rounded-xl w-96" placeholder="Rechercher un serveur" value="{{ request('search') }}">
+                                    <input type="text" name="search" class="bg-gray-800 rounded-xl w-96" placeholder="Rechercher un serveur" value="{{ request('search') }}">
                                     <button type="submit" class=" bg-gray-400 w-10 h-10 rounded-xl "><i class="ri-search-2-line "></i></button>
                                 </div>
                             </form>

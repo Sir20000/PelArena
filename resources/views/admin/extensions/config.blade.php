@@ -28,17 +28,18 @@
     @csrf
 
     @foreach($fields as $field)
-        <div>
+        <div class="flex flex-col">
             <label>{{ $field['label'] }}</label>
             <input
                 type="{{ $field['type'] }}"
                 name="{{ $field['key'] }}"
                 value="{{ old($field['key'], $values[$field['key']] ?? '') }}"
-                class="dark:text-black text-white"
+                class="text-black dark:text-white dark:bg-gray-800 rounded-lg bg-gray-100 "
 
             >
         </div>
     @endforeach
 
-    <button type="submit">Enregistrer</button>
+                            <button type="submit" class="mt-4 inline-flex items-center px-4 py-2 dark:bg-gray-700 bg-gray-200 border border-transparent rounded-md font-semibold text-xs dark:text-white text-gray-800 uppercase tracking-widest dark:hover:bg-gray-700 hover:bg-white dark:focus:bg-gray-700 focus:bg-white dark:active:bg-gray-900 active:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition ease-in-out duration-150" class="btn btn-success custom-success-button">Save</button>
+
 </form></x-app-layout>
