@@ -31,7 +31,12 @@ class Pelican
             [
                 'key' => 'api_token',
                 'type' => 'password',
-                'label' => 'API Token',
+                'label' => 'Admin API Token',
+                'default' => '' // vide par défaut
+            ], [
+                'key' => 'client_api_token',
+                'type' => 'password',
+                'label' => 'Clinet API Token',
                 'default' => '' // vide par défaut
             ],
         ];
