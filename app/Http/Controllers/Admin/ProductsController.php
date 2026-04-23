@@ -97,7 +97,6 @@ class ProductsController extends Controller
     {
 
         $product = Product::findOrFail($id->id);
-log::debug($product);
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
@@ -105,28 +104,27 @@ log::debug($product);
             'maxbyuser' => 'required|integer',
             'stock' => 'required|integer',
             'config' => 'required|array',
-        'price' => 'required|integer',
+        'price' => 'required|numeric',
         'info' => 'required|array',
         'extension' => 'required|string',
 
     
     ]);
-    log::debug($validatedData);
         foreach ($request->input('config') as $index => $value) {
             $customFields['config'][$index] = $value;
         }
     
-      
+
         foreach ($request->input('info') as $index => $value) {
             $customFields['info'][$index] = $value;
         }
 
         $validatedData['extension_fields'] = json_encode($customFields);
+
         $product->update($validatedData);
         
-              log::debug($product);
 
-        return redirect()->route('admin.products.index')->with('success', 'category mis à jour avec succès.');
+        return redirect()->route('admin.products.index')->with('success', 'Produit mis à jour avec succès.');
     }
     
     
