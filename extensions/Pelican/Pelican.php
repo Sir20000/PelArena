@@ -7,8 +7,7 @@ use App\Models\ExtensionConfig;
 use App\Extensions\ExtensionField;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use phpDocumentor\Reflection\Types\This;
+
 
 use function Pest\Laravel\options;
 
@@ -121,8 +120,7 @@ class Pelican
             'Accept'        => 'application/json',
         ])->get($url);
         $nodes = $response->json()['data'];
-log::debug($name);
-log::debug($nodes);
+
         $leastRamNode = null;
         $leastRamAllocated = PHP_INT_MAX;
         
@@ -354,8 +352,7 @@ public function Request(string $url, string $method = 'get', array $params = [])
                 ]
             ];
         }else{
-            log::debug($response);
-log::debug($data);
+
         }
         return false;    }
 
@@ -420,7 +417,6 @@ log::debug($data);
     }
     public function getEggs()
     {
-        log::debug("GETEGGS");
         $apiUrl = $this->getConfig('api_url');
         $apiToken = $this->getConfig('api_token');
         try {
@@ -431,12 +427,10 @@ log::debug($data);
         ])->get($apiUrl . 'api/application/eggs');
 
     } catch(\Exception $e){
-        Log::debug($e);
     return null;
     }
         if ($response->successful()) {
             $data = $response->json();
-                    Log::debug($data);
 
             $eggs = [];
 
@@ -456,7 +450,6 @@ log::debug($data);
     public function getFieldsNeeded(): array
     {
         // Retourne les champs nécessaires pour créer un serveur
-                log::debug("aAA");
 
         return [
             'ram' => ["type" => 'number', 'name' => 'RAM (MIB)'],
