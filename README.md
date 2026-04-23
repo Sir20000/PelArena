@@ -1,14 +1,14 @@
 # PelArena
 
-**PelArena** is a Pelican-compatible client space that builds upon Pelican's advancements, offering flexibility and customization for users to choose the resources they need. Whether you need 9 GB of RAM or any other specifications, PelArena allows you to personalize your setup. 
-
+**PelArena** is a Pelican-compatible client space that builds upon Pelican's advancements, PelArena allows you to personalize your setup. 
+(pelican and more but is soon)
 PelArena is **open source** and always welcomes suggestions and contributions from the community.
 
-Demo is sonn
+Demo is soon
 ---
 
 ## Features
-- Fully customizable resource allocation (e.g., RAM, storage, etc.)
+- Fully customizable extention
 - Built on Pelican's advancements for compatibility
 - Open-source and community-driven
 - Easy integration with Pelican-based platforms
