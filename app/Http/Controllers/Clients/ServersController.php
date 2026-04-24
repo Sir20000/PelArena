@@ -129,7 +129,7 @@ class ServersController extends Controller
     {
     $product =$id;
 
-        $extension_fields = json_decode($product->extension_fields, true);
+        $extension_fields = $product->extension_fields;
         $prix = $product->price;
         $maxValues = $extension_fields['config'];
         $server = ServerOrder::where('product_id', $product->name)->where('user_id', auth()->id())->count();
