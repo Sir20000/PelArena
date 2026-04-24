@@ -453,7 +453,7 @@ public function Request(string $url, string $method = 'get', array $params = [])
 
         return [
             'ram' => ["type" => 'number', 'name' => 'RAM (MIB)'],
-            'cpu' => ["type" => 'number', 'name' => 'CPU (Core)'],
+            'cpu' => ["type" => 'number', 'name' => 'CPU (%)'],
             'disk' => ["type" => 'number', 'name' => 'Disk (MIB)'],
             'db' => ["type" => 'number', 'name' => 'Database'],
             'port' => ["type" => 'number', 'name' => 'Allocations'],
@@ -465,7 +465,7 @@ public function Request(string $url, string $method = 'get', array $params = [])
         // Retourne les champs nécessaires pour créer un produit
         return [
             'ram' => ["type" => 'number', 'name' => 'RAM (MIB)', "information" => false, "icon" => "ri-ram-line"],
-            'cpu' => ["type" => 'number', 'name' => 'CPU (Core)', "information" => false, "icon" => "ri-cpu-line"],
+            'cpu' => ["type" => 'number', 'name' => 'CPU (%)', "information" => false, "icon" => "ri-cpu-line"],
             'disk' => ["type" => 'number', 'name' => 'Disk (MIB)', "information" => false, "icon" => "ri-hard-drive-3-line"],
             'db' => ["type" => 'number', 'name' => 'Database', "information" => false, "icon" => "ri-database-2-line"],
             'port' => ["type" => 'number', 'name' => 'Allocations', "information" => false, "icon" => "ri-door-line"],
