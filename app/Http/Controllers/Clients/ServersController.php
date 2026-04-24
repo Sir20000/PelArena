@@ -54,7 +54,9 @@ class ServersController extends Controller
 
         $extension_fields = json_decode($product->extension_fields, true);
         $prix = $product->price;
-       
+       if($extension_fields == null){
+        $extension_fields["name"] = $request->server_name;
+       }
 
         if ($product->stock == 0) {
 
