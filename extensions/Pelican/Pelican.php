@@ -327,7 +327,7 @@ public function Request(string $url, string $method = 'get', array $params = [])
             'limits' => [
                 'memory' => $data["extension_fields"]["ram"] ,
                 'swap' => 0,
-                'cpu' => $data["extension_fields"]["cpu"] * 100,
+                'cpu' => $data["extension_fields"]["cpu"],
                 'io' => 500,
                 'disk' => $data["extension_fields"]["disk"] ,
             ],
