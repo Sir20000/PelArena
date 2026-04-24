@@ -83,6 +83,7 @@ class ServersController extends Controller
             $serverData = $order->toArray();
             $serverData["email"] = Auth::user()->email;
             $serverData["info"] = $extension_fields['info'];
+            $serverData["config"] = $product->extension_fields['config'] ;
             $serverData["categorie"] = $categorie;
 
 
