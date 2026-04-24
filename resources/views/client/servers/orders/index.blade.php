@@ -54,6 +54,23 @@
                             </div>
 
                         </div>
+                        @elseif ($data['type'] === 'text')
+
+    <div class="mb-4 text-center items-center flex flex-col w-full">
+        <label for="{{ $field }}" class="block text-sm font-medium text-black dark:text-white">
+            {{ $data['name'] }}
+        </label>
+
+        <div class="input-group flex md:w-96 w-80">
+            <input
+                type="text"
+                name="value[{{ $field }}]"
+                id="{{ $field }}"
+                required
+                class="form-control rounded-xl mt-1 w-full dark:bg-gray-800 bg-gray-200 text-black dark:text-white border-gray-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            />
+        </div>
+    </div>
                         @else
                         <div class="mb-4 text-center items-center flex flex-col w-full">
                             <label for="{{ $field }}" class="block text-sm font-medium text-black dark:text-white">
