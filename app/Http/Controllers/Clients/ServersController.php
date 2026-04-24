@@ -54,9 +54,7 @@ class ServersController extends Controller
 
         $extension_fields = json_decode($product->extension_fields, true);
         $prix = $product->price;
-       if($extension_fields == null){
-        $extension_fields["name"] = $request->server_name;
-       }
+
 
         if ($product->stock == 0) {
 
@@ -73,7 +71,7 @@ class ServersController extends Controller
 
             'user_id' => Auth::id(),
             'status' => 'pending',
-            'extension_fields' => $request->value,
+            'extension_fields' => $request->value ?? [],
             'categorie' => $categorie->name,
             'product_id' => $product->id,
 
@@ -84,8 +82,8 @@ class ServersController extends Controller
         if ($provider) {
             $serverData = $order->toArray();
             $serverData["email"] = Auth::user()->email;
-            $serverData["info"] = $extension_fields['info'];
-            $serverData["config"] = $product->extension_fields['config'] ;
+            $serverData["info"] = $extension_fields['info']?? [];
+            $serverData["config"] = $product->extension_fields['config']?? [] ;
             $serverData["categorie"] = $categorie;
 
 
