@@ -23,8 +23,8 @@
                     @endif
 
                     <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-lg  text-center">Liste des catégories</h3>
-                    <button onclick="window.location.href='{{ route('admin.products.create') }}'" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs dark:text-white text-gray-800 uppercase tracking-widest dark:hover:bg-gray-700 hover:bg-white dark:focus:bg-gray-700 focus:bg-white dark:active:bg-gray-900 active:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition ease-in-out duration-150" class="btn btn-success custom-success-button">Crée une nouvelle categorie</button>
+                    <h3 class="font-bold text-lg  text-center">Liste des produits</h3>
+                    <button onclick="window.location.href='{{ route('admin.products.create') }}'" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs dark:text-white text-gray-800 uppercase tracking-widest dark:hover:bg-gray-700 hover:bg-white dark:focus:bg-gray-700 focus:bg-white dark:active:bg-gray-900 active:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition ease-in-out duration-150" class="btn btn-success custom-success-button">Crée un nouveau produit</button>
                     </div>
                     <div class="space-y-4 mt-6 ">
             @foreach($products as $product)
