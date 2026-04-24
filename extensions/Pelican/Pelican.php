@@ -452,12 +452,7 @@ public function Request(string $url, string $method = 'get', array $params = [])
         // Retourne les champs nécessaires pour créer un serveur
 
         return [
-            'ram' => ["type" => 'number', 'name' => 'RAM (MIB)'],
-            'cpu' => ["type" => 'number', 'name' => 'CPU (%)'],
-            'disk' => ["type" => 'number', 'name' => 'Disk (MIB)'],
-            'db' => ["type" => 'number', 'name' => 'Database'],
-            'port' => ["type" => 'number', 'name' => 'Allocations'],
-            'backups' => ["type" => 'number', 'name' => 'Backups '],
+
         ];
     }
     public function getFieldsCategorieNeeded(): array
