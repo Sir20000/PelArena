@@ -14,7 +14,9 @@ public function categorie()
 {
     return $this->belongsTo(Categories::class, 'categorie');
 }
-
+protected $casts = [
+        'extension_fields' => 'array',
+    ];
 
 
 }
