@@ -52,7 +52,7 @@ class ServersController extends Controller
 
         ]);
 
-        $extension_fields = json_decode($product->extension_fields, true);
+        $extension_fields = $product->extension_fields;
         $prix = $product->price;
 
 
