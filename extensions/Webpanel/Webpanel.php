@@ -215,9 +215,14 @@ class Webpanel
             }
 
             $options = [];
-            foreach ($response['php_versions'] as $version) {
-                $options[$version] = "PHP " . $version;
-            }
+         $options = [];
+
+foreach ($response['php_versions'] as $version) {
+    $options[] = [
+        "id" => $version,
+        "name" => "PHP " . $version
+    ];
+}
             return $options;
         });
     }
