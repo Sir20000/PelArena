@@ -325,16 +325,16 @@ public function Request(string $url, string $method = 'get', array $params = [])
 
             ],
             'limits' => [
-                'memory' => $data["extension_fields"]["ram"] ,
+                'memory' => $data["config"]["ram"] ,
                 'swap' => 0,
-                'cpu' => $data["extension_fields"]["cpu"],
+                'cpu' => $data["config"]["cpu"],
                 'io' => 500,
-                'disk' => $data["extension_fields"]["disk"] ,
+                'disk' => $data["config"]["disk"] ,
             ],
             'feature_limits' => [
-                'databases' => $data["extension_fields"]["db"],
-                'backups' =>  $data["extension_fields"]["backups"],
-                'allocations' => $data["extension_fields"]["port"] + 1,
+                'databases' => $data["config"]["db"],
+                'backups' =>  $data["config"]["backups"],
+                'allocations' => $data["config"]["port"] + 1,
             ],
 'deploy'=> [
 'tags' => [$data['categorie']["name"]],

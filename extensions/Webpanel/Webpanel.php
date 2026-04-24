@@ -128,7 +128,7 @@ class Webpanel
         // fields from order (user choice)
         $extension_fields = $data['extension_fields'] ?? [];
         // fields from product/category (admin config)
-        $category_fields = $data['extension_fields_categorie'] ?? $data['category_fields'] ?? $extension_fields;
+        $category_fields = $data['config'] ;
 
         $dns = $extension_fields['dns'] ?? ($data['server_name'] . '.webpanel.test');
         $php_version = $extension_fields['php_version'] ?? $category_fields['php_version'] ?? '8.2';
