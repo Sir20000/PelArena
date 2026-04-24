@@ -48,7 +48,7 @@ class ServersController extends Controller
             abort(404);
         }
         $request->validate([
-            'value' => 'required|array'
+            'value' => 'nullable|array'
 
         ]);
 
