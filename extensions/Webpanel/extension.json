@@ -1,0 +1,8 @@
+{
+    "name": "Webpanel",
+    "author": "Sir_200",
+    "version": "1.0.0",
+    "description": "Extension de gestion de sites pour Pelarena utilisant l'API KantumHost Webpanel.",
+    "util": "server",
+    "icon": "ri-window-line"
+}
