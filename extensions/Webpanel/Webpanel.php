@@ -59,10 +59,16 @@ class Webpanel
         $token = $this->getConfig('api_token');
 
         try {
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                        'Authorization' => 'Bearer ' . $token,
-                        'Accept' => 'application/json',
-                    ])->$method($url, $data);
+            $request = \Illuminate\Support\Facades\Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/json',
+            ]);
+
+            if ($method === 'get' && !empty($data)) {
+                $response = $request->get($url, $data);
+            } else {
+                $response = $request->$method($url, $data);
+            }
 
             if ($response->failed()) {
                 \Log::error("Webpanel API Error ($method $endpoint): " . $response->body());
@@ -78,17 +84,18 @@ class Webpanel
 
     public function testConfig()
     {
-        $response = $this->callApi('get', 'users');
+        $response = $this->callApi('get', 'users', ['limit' => 1]);
         return $response !== null;
     }
 
     public function createUser(array $data)
     {
-        $users = $this->callApi('get', 'users');
-        if (!$users)
+        $users = $this->callApi('get', 'users', ['email' => $data['email']]);
+
+        if ($users === null)
             return false;
 
-        $existingUser = collect($users)->firstWhere('email', $data['email']);
+        $existingUser = collect($users)->first();
 
         if (!$existingUser) {
             $response = $this->callApi('post', 'users', [
@@ -105,26 +112,47 @@ class Webpanel
 
     public function createServer(array $data)
     {
-        $users = $this->callApi('get', 'users');
-        $user = collect($users)->firstWhere('email', $data['email']);
+        // 1. Get or create user
+        $users = $this->callApi('get', 'users', ['email' => $data['email']]);
+        $user = collect($users)->first();
 
         if (!$user) {
             $this->createUser(['name' => $data['email'], 'email' => $data['email']]);
-            $users = $this->callApi('get', 'users');
-            $user = collect($users)->firstWhere('email', $data['email']);
+            $users = $this->callApi('get', 'users', ['email' => $data['email']]);
+            $user = collect($users)->first();
         }
 
         if (!$user)
             return false;
 
+        // fields from order (user choice)
         $extension_fields = $data['extension_fields'] ?? [];
+        // fields from product/category (admin config)
+        $category_fields = $data['extension_fields_categorie'] ?? $data['category_fields'] ?? $extension_fields;
 
+        $dns = $extension_fields['dns'] ?? ($data['server_name'] . '.webpanel.test');
+        $php_version = $extension_fields['php_version'] ?? $category_fields['php_version'] ?? '8.2';
+        $storage_max = $category_fields['disk'] ?? 1024; // Default 1GB
+
+        // 2. Check if site already exists by DNS
+        $existingSites = $this->callApi('get', 'sites', ['dns' => $dns]);
+
+        if (collect($existingSites)->isNotEmpty()) {
+            return [
+                'info' => [
+                    'site_id' => $existingSites[0]['id']
+                ]
+            ];
+        }
+
+        // 3. Create site
         $response = $this->callApi('post', 'sites', [
-            'name' => $data['server_name'] ?? $extension_fields['dns'] ?? ('Site ' . \Illuminate\Support\Str::random(5)),
-            'dns' => $extension_fields['dns'] ?? ($data['server_name'] . '.webpanel.test'),
+            'name' => $data['server_name'] ?? $dns,
+            'dns' => $dns,
             'user_id' => $user['id'],
             'description' => 'Created via Pelarena',
-            'php_version' => $extension_fields['php_version'] ?? '8.2'
+            'php_version' => $php_version,
+            'storage_max' => $storage_max,
         ]);
 
         if ($response && isset($response['site'])) {
@@ -165,42 +193,74 @@ class Webpanel
         return $this->callApi('put', "sites/$siteId", ['status' => 'active']) !== null;
     }
 
+    public function getSiteStats($siteId)
+    {
+        return $this->callApi('get', "sites/$siteId");
+    }
+
+    private function getPhpVersions(): array
+    {
+        $cacheKey = 'webpanel_php_versions';
+
+        // Cache for 1 hour to avoid excessive API calls
+        return \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function () {
+            $response = $this->callApi('get', 'system/versions');
+
+            if (!$response || !isset($response['php_versions'])) {
+                return [
+                    '8.1' => 'PHP 8.1',
+                    '8.2' => 'PHP 8.2',
+                    '8.3' => 'PHP 8.3',
+                ];
+            }
+
+            $options = [];
+            foreach ($response['php_versions'] as $version) {
+                $options[$version] = "PHP " . $version;
+            }
+            return $options;
+        });
+    }
+
     public function getFieldsNeeded(): array
     {
+        // Retourne les champs nécessaires pour créer un serveur (remplis par le client)
         return [
             'dns' => ["type" => 'text', 'name' => 'Domain Name (DNS)'],
             'php_version' => [
                 "type" => 'select',
                 'name' => 'PHP Version',
-                'options' => [
-                    '8.1' => 'PHP 8.1',
-                    '8.2' => 'PHP 8.2',
-                    '8.3' => 'PHP 8.3',
-                ]
+                'options' => $this->getPhpVersions(),
             ],
         ];
     }
 
     public function getFieldsCategorieNeeded(): array
     {
+        // Retourne les champs nécessaires pour créer un produit (remplis par l'admin)
         return [
-            'default_php_version' => [
+            'disk' => ["type" => 'number', 'name' => 'Disk (MIB)', "information" => false, "icon" => "ri-hard-drive-3-line"],
+            'php_version' => [
                 "type" => 'select',
                 'name' => 'Default PHP Version',
-                'options' => [
-                    '8.1' => 'PHP 8.1',
-                    '8.2' => 'PHP 8.2',
-                    '8.3' => 'PHP 8.3',
-                ],
                 "information" => true,
-                "icon" => "ri-code-s-slash-line"
+                "icon" => "ri-code-s-slash-line",
+                'options' => $this->getPhpVersions(),
             ],
         ];
     }
+
     public function index()
     {
-        return view("extensions.Webpanel::dashboard");
+        $stats = [
+            'sites_count' => count($this->callApi('get', 'sites') ?? []),
+            'users_count' => count($this->callApi('get', 'users') ?? []),
+            'api_status' => $this->testConfig() ? 'Online' : 'Offline',
+        ];
+
+        return view("extensions.Webpanel::dashboard", compact('stats'));
     }
+
     public function managerserver($server)
     {
         $siteId = $server['info']['site_id'] ?? null;
