@@ -44,28 +44,10 @@ class CategoriesController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'nullable', // Ajout de la validation pour l'image
-            'maxbyuser' => 'required|integer',
-            'stock' => 'required|integer',
-            'extension'=>'required|string|max:255',
-            'max' => 'required|array',
-        'prix' => 'required|array',
-        'info' => 'required|array',
+            
 
         ]);
-        foreach ($request->input('max') as $index => $value) {
-            $customFields['max'][$index] = $value;
-        }
-    
-        foreach ($request->input('prix') as $index => $value) {
-            $customFields['prix'][$index] = $value;
-        }
-        foreach ($request->input('info') as $index => $value) {
-            $customFields['info'][$index] = $value;
-        }
-        $validatedData['extension'] = $request->input('extension');
-
-        // Ajouter le champ custom_fields au modèle
-        $validatedData['extension_fields'] = json_encode($customFields);
+     
     
         $category = Categories::create($validatedData);
        
