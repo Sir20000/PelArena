@@ -208,9 +208,9 @@ class Webpanel
 
             if (!$response || !isset($response['php_versions'])) {
                 return [
-                    '8.1' => 'PHP 8.1',
-                    '8.2' => 'PHP 8.2',
-                    '8.3' => 'PHP 8.3',
+               ['id' => '8.1', 'name' => 'PHP 8.1'],
+        ['id' => '8.2', 'name' => 'PHP 8.2'],
+        ['id' => '8.3', 'name' => 'PHP 8.3'],
                 ];
             }
 
@@ -268,7 +268,7 @@ foreach ($response['php_versions'] as $version) {
 
     public function managerserver($server)
     {
-        $siteId = $server['info']['site_id'] ?? null;
+    $siteId = $server['extension_fields']['info']['site_id'] ?? null;
         if (!$siteId) {
             return redirect()->back()->with('error', 'Site ID not found.');
         }

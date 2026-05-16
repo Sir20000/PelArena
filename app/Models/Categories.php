@@ -12,28 +12,27 @@ class Categories extends Model
         'name',
         'description',
         'image',
-        'egg_id',
-        'nests',
+        //'egg_id',
+        //'nests',
         'created_at',
         'update_at',
-        'nodeid',
-        'maxram',
-        'maxcpu',
-        'maxstorage',
-        'maxdb',
-        'maxbackups',
-        'maxallocations',
-        'maxbyuser',
-        'stock',
-        'extension',
-
-        'extension_fields', // new JSON column for dynamic fields
+        //private
+        //'nodeid',
+        //'maxram',
+        //'maxcpu',
+        //'maxstorage',
+        //'maxdb',
+        //'maxbackups',
+        //'maxallocations',
+        //'maxbyuser',
+        //'stock',
+        //'extension',
+//
+        //'extension_fields', // new JSON column for dynamic fields
     ];
 
  
-    protected $casts = [
-        'extension_fields' => 'array', // cast JSON to array
-    ];
+  
       public function products()
     {
         return $this->hasMany(Product::class, 'categorie', 'id'); 

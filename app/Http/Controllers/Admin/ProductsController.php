@@ -85,7 +85,7 @@ class ProductsController extends Controller
     $extensions = ExtensionManager::getExtensions();
             $categories = Categories::all();
 
-    $fields = json_decode($id->extension_fields, true);
+    $fields = $id->extension_fields;
 
         
         return view('admin.products.edit', compact('id','server','extensions','fields','categories'));

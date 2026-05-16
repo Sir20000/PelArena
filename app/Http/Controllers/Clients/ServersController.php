@@ -131,6 +131,7 @@ class ServersController extends Controller
 
         $extension_fields = $product->extension_fields;
         $prix = $product->price;
+        $extension_fields = json_decode($extension_fields,true);
         $maxValues = $extension_fields['config'];
         $server = ServerOrder::where('product_id', $product->name)->where('user_id', auth()->id())->count();
         $provider = ExtensionManager::load($product->extension);
