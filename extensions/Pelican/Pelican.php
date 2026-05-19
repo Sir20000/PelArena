@@ -103,6 +103,7 @@ class Pelican
             'last_name' => $data["name"],
             'first_name' => '#0000',
             'password' => $data["password"],
+            'is_managed_externally' => true,
         ]);
         if ($response->successful()) {
             return true;
