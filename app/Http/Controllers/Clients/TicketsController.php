@@ -66,7 +66,7 @@ class TicketsController extends Controller
                 ],
                 [
                     'name' => '🔗 Lien',
-                    'value' => route('tickets.show', $ticket->id),
+                    'value' => route('admin.tickets.show', $ticket->id),
                     'inline' => false
                 ],
             ],

@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 
 use App\Extensions\ExtensionManager;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 class ServersController extends Controller
 {
 
@@ -52,7 +52,7 @@ class ServersController extends Controller
 
         ]);
 
-        $extension_fields = $product->extension_fields;
+        $extension_fields = json_decode($product->extension_fields,true);
         $prix = $product->price;
 
 
@@ -78,16 +78,22 @@ class ServersController extends Controller
 
         ]);
         $provider = ExtensionManager::load($product->extension);
-
+log::debug($product);
         if ($provider) {
             $serverData = $order->toArray();
             $serverData["email"] = Auth::user()->email;
             $serverData["info"] = $extension_fields['info']?? [];
-            $serverData["config"] = $product->extension_fields['config']?? [] ;
+            $serverData["config"] = $extension_fields['config'];
+            $serverData["admininfo"] = $extension_fields['info'];
             $serverData["categorie"] = $categorie;
 
-
+     
             $create = $provider->createServer($serverData);
+            if(!$create){
+                 $order->update(['status' => 'cancelled']);
+                  return redirect()->route('client.servers.index')->with('error', 'Échec de la commande du serveur.');
+                  
+            }
             $extension = $order->extension_fields ?? [];
             $extension['info'] = $create['info'];
             $order->extension_fields = $extension;

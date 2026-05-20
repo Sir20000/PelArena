@@ -5,8 +5,9 @@ namespace Extensions\Pelican;
 use App\Extensions\ExtensionManager;
 use App\Models\ExtensionConfig;
 use App\Extensions\ExtensionField;
-
+use App\Models\Product;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 
 use function Pest\Laravel\options;
@@ -287,8 +288,11 @@ public function Request(string $url, string $method = 'get', array $params = [])
     // Ajouter d'autres méthodes si besoin
     throw new \InvalidArgumentException("Méthode HTTP non supportée : $method");
 }
+
+
     public function createServer(array $data)
     {
+ 
         $response = $this->Request($this->getConfig('api_url').'api/application/users', 'get', [
             'filter[email]' => $data["email"],
         ]);
@@ -298,7 +302,9 @@ public function Request(string $url, string $method = 'get', array $params = [])
             return false;
         }
     
-        $egg = $this->EggDetail($data["info"]["egg_id"]);
+        $egg = $this->EggDetail($data["admininfo"]["egg_id"]);
+ 
+    
         $docker = $egg['attributes']['docker_image'];
 
         $startup = $egg['attributes']['startup'];
@@ -346,6 +352,7 @@ public function Request(string $url, string $method = 'get', array $params = [])
 ]
             
         ]);
+        log::debug($response);
         if ($response->successful()) {
             return [
                 "info" => [
@@ -480,3 +487,4 @@ $url =  $this->getConfig('api_url');
         return view("extensions.Pelican::managerserver",compact("server","url"));
     }
 }
+// add a update user 
