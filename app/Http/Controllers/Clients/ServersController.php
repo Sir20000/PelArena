@@ -42,11 +42,12 @@ class ServersController extends Controller
     public function createOrder(Request $request, $product)
     {
         $product = Product::all()->where('id', $product)->first();
-        $categorie = Categories::all()->where('id', $product->categorie)->first();
-        
+             
         if (!$product) {
             abort(404);
         }
+        $categorie = Categories::all()->where('id', $product->categorie)->first();
+   
         $request->validate([
             'value' => 'nullable|array'
 
@@ -139,7 +140,7 @@ log::debug($product);
         $prix = $product->price;
         $extension_fields = json_decode($extension_fields,true);
         $maxValues = $extension_fields['config'];
-        $server = ServerOrder::where('product_id', $product->name)->where('user_id', auth()->id())->count();
+$server = ServerOrder::where('product_id', $product->id)->where('user_id', auth()->id())->count();
         $provider = ExtensionManager::load($product->extension);
 
         $fields = $provider->getFieldsNeeded($product);

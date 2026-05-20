@@ -77,7 +77,7 @@ public function cancel()
 {
     // Trouver et supprimer la commande liée à l'ID de PayPal
     $paypalOrderId = request()->query('token');
-    $order = Credit::where('paypal_order_id', $paypalOrderId)->first();
+    $order = Credit::where('paypal_order_id', $paypalOrderId)->where('users_id', Auth::id())->first();
 
     if ($order) {
         $order->delete();

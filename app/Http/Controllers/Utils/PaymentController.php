@@ -115,10 +115,7 @@ class PaymentController extends Controller
 
         if (isset($response['status']) && $response['status'] === 'COMPLETED') {
             $order = ServerOrder::where(column: 'paypal_order_id', operator: $response['id'])->first();
-            $order->update([
-                'status' => 'active',
-                'renouvelle' => $order->renouvelle ? Carbon::parse($order->renouvelle)->addMonth(1) : Carbon::now()->addMonth(1),
-            ]);
+           
 
         $productId = $order->product_id;
 $product = Product::find($productId);
@@ -146,8 +143,12 @@ Log::debug($product);
             $total_tva = $totalPrice * $taux / 100;
             $total = $totalPrice + $total_tva;
             $total = round($total, 2);
-            $order->update(['cost' => $total]);
 
+ $order->update([
+                'status' => 'active',
+                'renouvelle' => $order->renouvelle ? Carbon::parse($order->renouvelle)->addMonth(1) : Carbon::now()->addMonth(1),
+                'cost' => $total,
+            ]);
             return redirect()->route(route: 'client.servers.index')->with(key: 'success', value: 'Commande payée avec succès.');
         }
 
@@ -162,7 +163,8 @@ Log::debug($product);
     public function credit($id)
     {
         $user = auth()->user();
-        $order = ServerOrder::find($id);
+     $order = ServerOrder::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
         if ($user->credit >= $order->cost) {
             $user->credit = $user->credit - $order->cost;
             $user->save();
@@ -210,7 +212,8 @@ Log::debug($product);
     }
     public function cancelp($id)
     {
-        $order = ServerOrder::find(id: $id);
+      $order = ServerOrder::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
         $order->update(['status' => 'cancelled']);
         $order->save();
         $serverId = $order->server_id;

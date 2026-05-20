@@ -12,12 +12,13 @@ class RoleMiddleware
         $user = Auth::user();
         $route = $request->route()->getName();
 
-        if ($user && $user->hasAccess($route)) {
-            return $next($request);
-        }
-        elseif ($user->role->name == 'admin') {
-            return $next($request);
-        };
+if (!$user) {
+    abort(403, 'Unauthorized');
+}
+if (($user->role && $user->role->name === 'admin') || $user->hasAccess($route)) {
+    return $next($request);
+}
+     
 
         abort(403, 'Unauthorized');
     }

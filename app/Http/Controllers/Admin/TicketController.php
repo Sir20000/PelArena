@@ -26,14 +26,14 @@ class TicketController extends Controller
     public function show($ticketId)
     {
         
-        $ticket = Ticket::findOrFail($ticketId);
+$ticket = Ticket::where('id', $ticketId)->where('user_id', Auth::id())->firstOrFail();
         $messages = TicketMessage::where('ticket_id', $ticketId)->get();
         return view('admin.tickets.show', compact('ticket', 'messages'));
     }
 
     public function close($id)
     { 
-        $ticket = Ticket::findOrFail($id);
+$ticket = Ticket::where('id', $ticketId)->where('user_id', Auth::id())->firstOrFail();
         $ticket->update(['status' => 'closed']);
         return redirect()->route('tickets.index')->with('success', 'Ticket fermé avec succès!');
     }

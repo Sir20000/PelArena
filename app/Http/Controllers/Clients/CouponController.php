@@ -49,6 +49,10 @@ class CouponController extends Controller
     $coupon->max_usage = $coupon->max_usage - 1;
     $coupon->save();
     $reducedCost = round($order->cost * (1 - $coupon->reduction / 100), 2);
+    if($reducedCost < 0){
+            return back()->with('error', 'Coupon mal configuré!');
+
+    }
     $order->update(['cost' => $reducedCost]);
     $coupon->usages()->create([
         'user_id' => $user->id,

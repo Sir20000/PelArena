@@ -47,15 +47,16 @@ if (!function_exists('settings')) {
      * @param mixed $default La valeur par défaut si le paramètre n'existe pas.
      * @return mixed La valeur du paramètre ou la valeur par défaut.
      */
-    function settings($key, $default = null)
-    {
-        // Utiliser le cache pour éviter des requêtes répétées
+   
+function settings($key, $default = null)
+{
+    static $settings = null;
+    if ($settings === null) {
         $settings = DB::table('settings')->pluck('settings', 'name')->toArray();
-
-
-        // Retourner la valeur correspondante ou la valeur par défaut
-        return $settings[$key] ?? $default;
     }
+    return $settings[$key] ?? $default;
+}
+
 }
 if (!function_exists('format_number')) {
     function format_number($number)
