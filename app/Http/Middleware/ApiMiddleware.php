@@ -37,11 +37,9 @@ class ApiMiddleware
            }
    
            // Vérifier si le token existe dans la base de données
-           $apiKey = ApiKeyModel::all()->first(function ($item) use ($token) {
-            // Décryptage du token stocké
-            $decryptedToken = Crypt::decrypt($item->token);
-            return $decryptedToken === $token;
-        });
+     $hashedToken = hash('sha256', $token);
+$apiKey = ApiKeyModel::where('token_hash', $hashedToken)->first();
+
    
            if (!$apiKey) {
                return response()->json(['error' => 'Token invalide'. Crypt::encrypt($token)], 401);

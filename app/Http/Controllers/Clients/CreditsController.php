@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Trensaction;
-
+use App\Models\User;
 use App\Models\Credit;
 
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -106,7 +106,11 @@ public function success(Request $request)
 
     if ($response['status'] === 'COMPLETED') {
         // Ajouter les crédits à l'utilisateur
-        $user = Auth::user();
+   $user = User::find($order->users_id);
+if (!$user) {
+    return redirect()->route('dashboard')->with('error', 'Utilisateur propriétaire introuvable.');
+}
+
         $user->credit += $order->amount;
         $user->save();
         Trensaction::create([

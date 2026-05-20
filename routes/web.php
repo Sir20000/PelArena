@@ -26,8 +26,7 @@ Route::middleware(['auth', CheckUserDisabled::class,Ensure2FAEnabled::class])->g
 
 require __DIR__ . '/auth.php';
 
-Route::prefix('admin')->middleware(['auth', RoleMiddleware::class], CheckUserDisabled::class)->group(function () {
-
+Route::prefix('admin')->middleware(['auth', CheckUserDisabled::class, RoleMiddleware::class])->group(function () {
     require __DIR__ . '/admin.php';
 });
 
