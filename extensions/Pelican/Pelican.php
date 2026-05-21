@@ -7,7 +7,6 @@ use App\Models\ExtensionConfig;
 use App\Extensions\ExtensionField;
 use App\Models\Product;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 
 use function Pest\Laravel\options;
@@ -352,7 +351,6 @@ public function Request(string $url, string $method = 'get', array $params = [])
 ]
             
         ]);
-        log::debug($response);
         if ($response->successful()) {
             return [
                 "info" => [
