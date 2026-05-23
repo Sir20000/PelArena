@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-              "pterodactyl_user_id"
-
-                
-            ]);           });
+             $table->dropUnique('users_pterodactyl_user_id_unique');
+    $table->dropColumn('pterodactyl_user_id');        });
     }
 
     /**
