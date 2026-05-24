@@ -60,8 +60,7 @@ class User extends Authenticatable
 public function isEnabled(): bool
 {
     // Change from $this->is_enabled to $this->enable
-    return (bool) $this->enable; 
-}
+return is_null($this->enable) ? true : (bool) $this->enable;}
 
 public function couponUsages()
 {
