@@ -13,7 +13,11 @@
 
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    // NOTE: RefreshDatabase recharge la DB à chaque test. 
+    // Si tu as besoin de ne pas réinitialiser la DB pour certains tests,
+    // il faut alors ne pas utiliser ce trait au niveau global et le cibler.
     ->in('Feature');
+
 
 /*
 |--------------------------------------------------------------------------

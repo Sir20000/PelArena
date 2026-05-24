@@ -81,10 +81,17 @@ public function role()
 
 public function hasAccess($route)
 {
+    // Si l'utilisateur n'a aucun rôle associé, on bloque l'accès directement
+    if (!$this->role) {
+        return false;
+    }
 
+    // Si le rôle possède la permission globale '*', on autorise
     if (in_array('*', $this->role->permissions)) {
         return true;
     }
+
+    // Sinon, on vérifie si la route demandée est dans les permissions du rôle
     return in_array($route, $this->role->permissions);
-}    
+}
 }
