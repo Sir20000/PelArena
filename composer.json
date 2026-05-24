@@ -11,9 +11,12 @@
         "laravel/fortify": ">=1.25.4",
         "laravel/framework": "^11.42.1",
         "laravel/tinker": "^2.10.1",
+        "mailgun/mailgun-php": "~1.7.1",
         "pragmarx/google2fa-laravel": "^2.3",
         "spaanproductions/invisible-recaptcha": "^2.0.4",
-        "srmklive/paypal": "^3.0.32"
+        "srmklive/paypal": "^3.0.32",
+        "symfony/http-client": "^8.0",
+        "symfony/mailgun-mailer": "^8.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24.1",

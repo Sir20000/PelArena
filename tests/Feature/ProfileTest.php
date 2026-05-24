@@ -13,7 +13,7 @@ test('profile page is displayed', function () {
 });
 
 test('profile information can be updated', function () {
-    $user = User::factory()->create(['pterodactyl_user_id' => 1]);
+    $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
