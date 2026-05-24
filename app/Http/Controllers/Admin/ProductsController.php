@@ -87,7 +87,7 @@ class ProductsController extends Controller
 
     $fields = $id->extension_fields;
 
-        
+        $fields = json_decode($fields, true); // MUST be array
         return view('admin.products.edit', compact('id','server','extensions','fields','categories'));
     }
     /**
