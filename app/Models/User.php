@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'pterodactyl_user_id',
         'credit',
         'role_id',
         'referred_by',
