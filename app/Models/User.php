@@ -57,9 +57,10 @@ class User extends Authenticatable
 {
     return $this->role === 'admin';
 }
-public function enable()
+public function isEnabled(): bool
 {
-    return $this->enable === 1;
+    // Change from $this->is_enabled to $this->enable
+    return (bool) $this->enable; 
 }
 
 public function couponUsages()

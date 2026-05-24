@@ -16,19 +16,15 @@ class CheckUserDisabled
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
-    {           
-
-        if (Auth::check()) {
-            // Vérifie si l'utilisateur a 'enable' à 1
-
-            if (Auth::user()->enable === 0) {
-                return abort(403,'Compte desactivé'); // Accès refusé
-            }
-            return $next($request);
-
+   public function handle($request, Closure $next)
+{           
+    if (Auth::check()) {
+        // Use the model method instead of accessing a property directly
+        if (!Auth::user()->isEnabled()) {
+            abort(403, 'Compte desactivé'); // Accès refusé
         }
-
-        return $next($request);
     }
+
+    return $next($request);
+}
 }
