@@ -36,7 +36,6 @@ class UsersController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
-                'pterodactyl_user_id' => 'required|integer|min:0',
                 'credit' => 'required|integer|min:0',
                 'affiliate_code' => 'nullable|string|max:255',
                 'role_id' => 'required|integer|min:0',
@@ -48,7 +47,6 @@ class UsersController extends Controller
             $data = $request->only([
                 'name',
                 'email',
-                'pterodactyl_user_id',
                 'credit',
                 'affiliate_code',
                 'role_id',

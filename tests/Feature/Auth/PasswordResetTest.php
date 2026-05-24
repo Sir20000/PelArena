@@ -13,7 +13,7 @@ test('reset password link screen can be rendered', function () {
 test('reset password link can be requested', function () {
     Notification::fake();
 
-    $user = User::factory()->create(['pterodactyl_user_id' => 1]);
+    $user = User::factory()->create( );
     $this->post('/forgot-password', ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class);
@@ -22,7 +22,7 @@ test('reset password link can be requested', function () {
 test('reset password screen can be rendered', function () {
     Notification::fake();
 
-    $user = User::factory()->create(['pterodactyl_user_id' => 1]);
+    $user = User::factory()->create( );
     $this->post('/forgot-password', ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
@@ -37,8 +37,7 @@ test('reset password screen can be rendered', function () {
 test('password can be reset with valid token', function () {
     Notification::fake();
 
-    $user = User::factory()->create(['pterodactyl_user_id' => 1]);
-    $user->pterodactyl_user_id = 0;
+    $user = User::factory()->create( );
     $this->post('/forgot-password', ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {

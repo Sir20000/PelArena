@@ -82,7 +82,6 @@ $roles = Role::all();
             $data = $request->only([
                 'name',
                 'email',
-                'pterodactyl_user_id',
                 'credit',
                 'affiliate_code',
                 'role_id',

@@ -61,10 +61,7 @@ public function enable()
 {
     return $this->enable === 1;
 }
-public function PterodactylId()
-{
-    return $this->pterodactyl_user_id;
-}
+
 public function couponUsages()
 {
     return $this->hasMany(CouponUsage::class);

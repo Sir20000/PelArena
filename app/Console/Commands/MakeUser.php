@@ -1,5 +1,5 @@
 <?php
-
+//A REFAIRE
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -85,7 +85,6 @@ class MakeUser extends Command
                 'email' => $email,
                 'password' => Hash::make($password),
                 'role' => $role,
-                'pterodactyl_user_id' => $pteroUser['id'], // Assurez-vous que cette colonne existe
             ]);
 
             if ($user) {
