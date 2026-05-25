@@ -7,7 +7,7 @@ use App\Models\ExtensionConfig;
 use App\Extensions\ExtensionField;
 use App\Models\Product;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Log;
 
 use function Pest\Laravel\options;
 
@@ -25,7 +25,7 @@ class Pelican
                 'key' => 'api_url',
                 'type' => 'text',
                 'label' => 'API URL',
-                'default' => 'https://panel.example.com' // valeur par défaut
+                'default' => 'https://panel.example.com/' // valeur par défaut
             ],
             [
                 'key' => 'api_token',
@@ -54,13 +54,23 @@ class Pelican
             );
         }
     }
-    
-    public function getConfig(string $key, $default = null)
-    {
-        return ExtensionConfig::where('extension', 'pelican')
-            ->where('key', $key)
-            ->value('value') ?? $default;
-    }	
+    private function normalizeApiUrl(string $url): string
+{
+    return rtrim($url, '/') . '/';
+}
+public function getConfig(string $key, $default = null)
+{
+    $value = ExtensionConfig::where('extension', 'pelican')
+        ->where('key', $key)
+        ->value('value') ?? $default;
+
+    // Auto-fix pour api_url
+    if ($key === 'api_url' && !empty($value)) {
+        $value = $this->normalizeApiUrl($value);
+    }
+
+    return $value;
+}
 
     public function setConfig(string $key, $value): void
     {
@@ -198,7 +208,7 @@ class Pelican
 
         if ($response->successful()) {
             $data = $response->json(); 
-            $url = $this->getConfig('api_url'). '/server/' . $data["attributes"]["id"]."/console";
+            $url = $this->getConfig('api_url'). 'server/' . $data["attributes"]["id"]."/console";
             return $url;
         }
         return null;
@@ -228,7 +238,7 @@ public  function idtoindentifier($product)
         'Authorization' => 'Bearer ' . env('PTERODACTYL_API_KEY'),
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
-    ])->get($this->getConfig('api_url'). '/api/application/servers/'.$server);
+    ])->get($this->getConfig('api_url'). 'api/application/servers/'.$server);
     $server = $response->json();
 
     $server = $server['attributes']['identifier'];
@@ -298,8 +308,9 @@ public function Request(string $url, string $method = 'get', array $params = [])
         
         $userId = $response['data'][0]['attributes']['id'] ?? null;
         if (!$userId){
-            return false;
-        }
+ $this->createUser(['name' => $data['email'], 'email' => $data['email'],'password' => ""]);
+      
+                }
     
         $egg = $this->EggDetail($data["admininfo"]["egg_id"]);
  
@@ -358,7 +369,9 @@ public function Request(string $url, string $method = 'get', array $params = [])
                 ]
             ];
         }else{
-
+            log::debug(
+                $response
+            );
         }
         return false;    }
 

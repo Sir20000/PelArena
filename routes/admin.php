@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ExtensionConfigController;
 use App\Http\Controllers\Admin\ExtensionController;
 use App\Http\Controllers\Admin\TicketsCategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\SyncServer;
 
 
 Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard.index');
@@ -135,3 +136,4 @@ Route::get('/extensions/{extension}/config', [ExtensionConfigController::class, 
 // Sauvegarder les changements
 Route::post('/extensions/{extension}/config', [ExtensionConfigController::class, 'save'])->name('admin.extensions.config.save');
 Route::get('/extensions', [ExtensionController::class, 'index'])->name('admin.extensions.index');
+Route::get('/sync', [SyncServer::class, 'index'])->name('admin.sync');

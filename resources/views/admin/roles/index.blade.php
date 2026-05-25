@@ -31,8 +31,7 @@
                         @foreach($roles as $p)
                         <div class="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-md flex items-center justify-between">
                             <div class="flex-1">
-                                <h3 class="text-lg font-medium text-black dark:text-white">Roles : {{ $p->name }}</h3>
-                                <p class="text-gray-300">ID : {{ $p->id }}</p>
+                                <h3 class="text-lg font-medium text-black dark:text-white">{{ $p->name }}</h3>
                             </div>
                             <div class="flex items-center space-x-2 ">
                                 @if(auth()->user() && auth()->user()->hasAccess('admin.roles.edit'))

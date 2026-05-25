@@ -22,70 +22,81 @@
     "src": "extensions/Proxmox/js/app.js",
     "isEntry": true
   },
+  "extensions/Webpanel/css/app.css": {
+    "file": "assets/app-tn0RQdqM.css",
+    "src": "extensions/Proxmox/css/app.css",
+    "isEntry": true
+  },
+  "extensions/Webpanel/js/app.js": {
+    "file": "assets/app-K6Dvbx-E.js",
+    "name": "app",
+    "src": "extensions/Webpanel/js/app.js",
+    "isEntry": true
+  },
   "node_modules/remixicon/fonts/remixicon.eot": {
-    "file": "assets/remixicon-BVJ9S1ev.eot",
+    "file": "assets/remixicon-B25hvfAs.eot",
     "src": "node_modules/remixicon/fonts/remixicon.eot"
   },
   "node_modules/remixicon/fonts/remixicon.svg": {
-    "file": "assets/remixicon-C2wQ2gtc.svg",
+    "file": "assets/remixicon-BTtOSOPh.svg",
     "src": "node_modules/remixicon/fonts/remixicon.svg"
   },
   "node_modules/remixicon/fonts/remixicon.ttf": {
-    "file": "assets/remixicon-CfJD46dY.ttf",
+    "file": "assets/remixicon-sqouR8Ox.ttf",
     "src": "node_modules/remixicon/fonts/remixicon.ttf"
   },
   "node_modules/remixicon/fonts/remixicon.woff": {
-    "file": "assets/remixicon-BBpe-Xu7.woff",
+    "file": "assets/remixicon-S6an_USy.woff",
     "src": "node_modules/remixicon/fonts/remixicon.woff"
   },
   "node_modules/remixicon/fonts/remixicon.woff2": {
-    "file": "assets/remixicon-BVvFtaex.woff2",
+    "file": "assets/remixicon-CZw4FkzQ.woff2",
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "node_modules/trumbowyg/dist/plugins/allowtagsfrompaste/trumbowyg.allowtagsfrompaste.min.js": {
-    "file": "assets/trumbowyg.allowtagsfrompaste.min-C3GezTTy.js",
+    "file": "assets/trumbowyg.allowtagsfrompaste.min-BXakPN9x.js",
     "name": "trumbowyg.allowtagsfrompaste.min",
     "src": "node_modules/trumbowyg/dist/plugins/allowtagsfrompaste/trumbowyg.allowtagsfrompaste.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js": {
-    "file": "assets/trumbowyg.base64.min-CSwr4j4F.js",
+    "file": "assets/trumbowyg.base64.min-DbIusnQi.js",
     "name": "trumbowyg.base64.min",
     "src": "node_modules/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js": {
-    "file": "assets/trumbowyg.colors.min-CRok4qgm.js",
+    "file": "assets/trumbowyg.colors.min-BpJcekMA.js",
     "name": "trumbowyg.colors.min",
     "src": "node_modules/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/plugins/emoji/trumbowyg.emoji.min.js": {
-    "file": "assets/trumbowyg.emoji.min-yblCuLJS.js",
+    "file": "assets/trumbowyg.emoji.min-CQGzV1Nx.js",
     "name": "trumbowyg.emoji.min",
     "src": "node_modules/trumbowyg/dist/plugins/emoji/trumbowyg.emoji.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/plugins/fontfamily/trumbowyg.fontfamily.min.js": {
-    "file": "assets/trumbowyg.fontfamily.min-CahY12Wt.js",
+    "file": "assets/trumbowyg.fontfamily.min-CLCt0GXi.js",
     "name": "trumbowyg.fontfamily.min",
     "src": "node_modules/trumbowyg/dist/plugins/fontfamily/trumbowyg.fontfamily.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js": {
-    "file": "assets/trumbowyg.fontsize.min-0QavsU0K.js",
+    "file": "assets/trumbowyg.fontsize.min-DPCU-oyo.js",
     "name": "trumbowyg.fontsize.min",
     "src": "node_modules/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/plugins/table/trumbowyg.table.min.js": {
-    "file": "assets/trumbowyg.table.min-CCHhf_qW.js",
+    "file": "assets/trumbowyg.table.min-BheHIjpm.js",
     "name": "trumbowyg.table.min",
     "src": "node_modules/trumbowyg/dist/plugins/table/trumbowyg.table.min.js",
     "isDynamicEntry": true
   },
   "node_modules/trumbowyg/dist/trumbowyg.min.js": {
-    "file": "assets/trumbowyg.min-CitUrbl3.js",
+    "file": "assets/trumbowyg.min-QRzSf0Eh.js",
     "name": "trumbowyg.min",
     "src": "node_modules/trumbowyg/dist/trumbowyg.min.js",
     "isDynamicEntry": true
@@ -95,12 +106,12 @@
     "src": "node_modules/trumbowyg/dist/ui/trumbowyg.min.css"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B9FVyXjV.css",
+    "file": "assets/app-D_zkUhQf.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DziQnGRW.js",
+    "file": "assets/app-D3NQfW4G.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -115,14 +126,14 @@
       "node_modules/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js"
     ],
     "css": [
-      "assets/app-Dy54gasd.css"
+      "assets/app-CJPcDQ9N.css"
     ],
     "assets": [
-      "assets/remixicon-BVJ9S1ev.eot",
-      "assets/remixicon-BVvFtaex.woff2",
-      "assets/remixicon-BBpe-Xu7.woff",
-      "assets/remixicon-CfJD46dY.ttf",
-      "assets/remixicon-C2wQ2gtc.svg"
+      "assets/remixicon-B25hvfAs.eot",
+      "assets/remixicon-CZw4FkzQ.woff2",
+      "assets/remixicon-S6an_USy.woff",
+      "assets/remixicon-sqouR8Ox.ttf",
+      "assets/remixicon-BTtOSOPh.svg"
     ]
   }
 }

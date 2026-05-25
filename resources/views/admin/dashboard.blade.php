@@ -11,7 +11,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl flex justify-between items-center">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold">Bienvenue, <span class="capitalize">
                             {{ auth()->user()->name }}
@@ -20,6 +20,9 @@
                     <p>Ceci est le tableau de bord administratif. Il est <span id="heure"></span>.</p>
                     @if(auth()->user() && auth()->user()->hasAccess('admin.dashboard.update'))
                 </div>
+                
+                    <button class="text-white bg-blue-500 p-4 m-6 rounded-lg shadow-sm" onclick="window.location.href='{{route("admin.sync")}}'"> Syncronisé</button>
+                
             </div>
             @if (session('success'))
             <div class="bg-green-500  text-white px-4 py-2 rounded-xl mt-2">

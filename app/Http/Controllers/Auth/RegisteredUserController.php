@@ -65,12 +65,19 @@ class RegisteredUserController extends Controller
             $userData = $user->toArray();
             $userData['password'] = $request->password; // Ajoute le mot de passe manuellement
 
-            ExtensionManager::executeOnAllExtensions(function ($instance, $key) use ($userData) {
-                if (method_exists($instance, 'createUser')) {
-                    $instance->createUser($userData);
-                    \Log::info("Méthode createUser exécutée pour l'extension {$key}");
-                }
-            });
+          ExtensionManager::executeOnAllExtensions(function ($instance, $key) use ($userData) {
+    if (method_exists($instance, 'createUser')) {
+        try {
+            $instance->createUser($userData);
+
+            \Log::info("Méthode createUser exécutée pour l'extension {$key}");
+        } catch (\Throwable $e) {
+            \Log::error("Erreur dans createUser pour l'extension {$key} : {$e->getMessage()}", [
+                'exception' => $e,
+            ]);
+        }
+    }
+});
             // Déclenche l'événement de l'utilisateur enregistré
             event(new Registered($user));
 

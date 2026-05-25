@@ -60,6 +60,7 @@ class UsersController extends Controller
 $roles = Role::all();
         return view('admin.users.edit', compact('user','server','roles'));
     }
+// EXTENTION UPDATE
 
     public function update(Request $request, User $id)
     {
