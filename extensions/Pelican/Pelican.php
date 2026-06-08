@@ -497,5 +497,12 @@ public function Request(string $url, string $method = 'get', array $params = [])
 $url =  $this->getConfig('api_url'); 
         return view("extensions.Pelican::managerserver",compact("server","url"));
     }
+    public function Sync ($servers){
+foreach ($servers as $server) {
+            $id = $server["server_id"];
+            
+
+    }
+    }
 }
 // add a update user 

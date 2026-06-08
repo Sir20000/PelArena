@@ -14,7 +14,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex justify-between items-center">
                         <div class="item1">
-                            <form action="{{ route('client.servers.index') }}" method="GET" class="">
+                            <form action="{{ route('admin.servers.index') }}" method="GET" class="">
                                 <div class="input-group px-4 py-2">
                                     <input type="text" name="search" class="bg-gray-800 rounded-xl w-96" placeholder="Rechercher un serveur" value="{{ request('search') }}">
                                     <button type="submit" class=" bg-gray-400 w-10 h-10 rounded-xl "><i class="ri-search-2-line "></i></button>
@@ -29,7 +29,7 @@
                         @forelse($server as $order)
 
                         <div class="bg-white dark:bg-gray-700 p-4 mx-auto rounded-xl shadow-md flex items-center justify-between dark:text-white text-black relative" style="max-width: 1180px;">
-                            <div class="@if($order->status === 'pending') bg-yellow-500 @elseif($order->status === 'cancelled') bg-red-500 @else bg-green-500 @endif w-2  absolute left-0 top-0 bottom-0 rounded-l-lg"></div>
+                            <div class="@if($order->status === 'pending') bg-yellow-500 @elseif($order->status === 'cancelled') bg-red-500 @elseif($order->status === 'suspendu') bg-orange-500 @else bg-green-500 @endif w-2  absolute left-0 top-0 bottom-0 rounded-l-lg"></div>
 
                             <div class="flex-1 pl-2">
                                 <h3 class="text-lg font-medium dark:text-white text-black">Name : {{ $order->server_name }}</h3>

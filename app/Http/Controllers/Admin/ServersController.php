@@ -19,8 +19,10 @@ class ServersController extends Controller
 
     // Appliquer un filtre de recherche
     if ($request->has('search') && !empty($request->search)) {
-        $query->where('name', 'like', '%' . $request->search . '%') // Recherche sur le nom
-              ->orWhere('email', 'like', '%' . $request->search . '%'); // Ou sur l'email
+        $query->where(function ($q) use ($request) {
+                $q->where('server_name', 'like', '%' . $request->search . '%')
+                    ->orWhere('categorie', 'like', '%' . $request->search . '%');
+            });// Ou sur l'email
     }
 
     // Récupérer les utilisateurs avec pagination
@@ -57,6 +59,7 @@ public function edit(ServerOrder $id)
 
 public function update(Request $request, ServerOrder $id)
 {
+    //TO DO rework that
     try {
         $request->merge(['enable' => $request->has('enable')]);
 
