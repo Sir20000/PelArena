@@ -18,30 +18,28 @@ use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
-    public function index($id)
+    public function index(ServerOrder $id)
     {
         $creditornot = 012;
-        $order = ServerOrder::find($id);
+        $order = $id;
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
         }
         $user = auth()->user();
 
         if ($order->cost == 0) {
-            $categorie = $order->categorie;
             $product = $order->product_id;
 
-            $categorieid = Categories::all()->where('name', $categorie)->first();
             $product = Product::all()->where('id', $product)->first();
 
 
             $order->update(['status' => 'active', 'renouvelle' => Carbon::now()->addMonth(1)]);
-            $serverId = $order->server_id;
    $provider = ExtensionManager::load($product->extension);
 
             if($provider){
             $info = $order->extension_fields;
-               $corder = $provider->unsuspendServer($info["info"]);
+            $corder = $provider->unsuspendServer($info['info']);
+
             }
            log::debug($corder);
            

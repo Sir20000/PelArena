@@ -12,7 +12,7 @@
             <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold mb-6">Modifier l'utilisateur</h1>
-                    <nav class="flex border-b dark:border-gray-700 mt-4 bg-white ">
+                    <nav class="flex border-b dark:border-gray-700 mt-4 bg-gray-100 dark:bg-gray-800 ">
                         <button class="tab-link mr-4 pb-2 text-gray-600 dark:text-gray-300 focus:outline-none" data-tab="general"> <i class="ri-settings-4-line"></i> General Information</button>
                         <button class="tab-link mr-4 pb-2 text-gray-600 dark:text-gray-300 focus:outline-none" data-tab="server"><i class="ri-server-line"></i> Serveurs</button>
 
@@ -33,12 +33,12 @@
                             @endif
                             <div>
                                 <label for="name" class="block text-sm font-medium">Nom</label>
-                                <input type="text" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->name }}" required>
+                                <input type="text" name="name" class="bg-gray-100 dark:bg-gray-700 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->name }}" required>
                             </div>
 
                             <div>
                                 <label for="email" class="block text-sm font-medium">E-Mail</label>
-                                <input type="email" name="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->email }}" required>
+                                <input type="email" name="email" class="bg-gray-100 dark:bg-gray-700  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->email }}" required>
                             </div>
 
                             <div>
@@ -59,12 +59,12 @@
 
                             <div>
                                 <label for="credit" class="block text-sm font-medium">Crédit</label>
-                                <input type="number" name="credit" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->credit }}" min="0" step="1">
+                                <input type="number" name="credit" class="bg-gray-100 dark:bg-gray-700  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->credit }}" min="0" step="1">
                             </div>
 
                             <div>
                                 <label for="affiliate_code" class="block text-sm font-medium">Code d'affiliation</label>
-                                <input type="text" name="affiliate_code" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->affiliate_code }}">
+                                <input type="text" name="affiliate_code" class="bg-gray-100 dark:bg-gray-700  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ $user->affiliate_code }}">
                             </div>
 
                             <div>
@@ -78,7 +78,7 @@
 
                             <div>
                                 <label for="role_id" class="block text-sm font-medium">Rôle</label>
-                                <select name="role_id" id="role_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <select name="role_id" id="role_id" class="bg-gray-100 dark:bg-gray-700  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     @foreach ($roles as $role)
                                     <option value="{{ $role->id }}" {{ $user->role->id == $role->id ? 'selected' : '' }}>
                                         {{ $role->name }}
@@ -98,7 +98,7 @@
                             </div>
                             <div class="">
                                 <label for="password" class="block text-sm font-medium">Password</label>
-                                <input type="password" name="password" class=" mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="password" name="password" class="bg-gray-100 dark:bg-gray-700  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                                 @if(auth()->user() && auth()->user()->hasAccess('admin.users.update'))
 

@@ -16,15 +16,16 @@ class DashboardController extends Controller
     {
         $credit = User::where ('id',Auth::user()->id)->first()->credit;
         $serverCount = ServerOrder::where('user_id',Auth::id())->count();
+
         $totalCost = ServerOrder::where('user_id', Auth::id())->where('status', '!=', 'cancelled')->sum('cost');
         $ticket = Ticket::where('user_id',Auth::id())->count();
-        $serverCountPending = ServerOrder::where('user_id',Auth::id())->where('status', 'pending')
-        ->count();
+        $serverCountPending = ServerOrder::where('user_id',Auth::id())->where('status', 'pending')->count();
         $affiliate = User::where('referred_by',Auth::id())->count();
+        $servers = ServerOrder::where('user_id',Auth::id())->get();
 
         
 
-        return view('client.dashboard',compact("serverCount","totalCost","serverCountPending","credit","ticket","affiliate"));
+        return view('client.dashboard',compact("serverCount","totalCost","serverCountPending","credit","ticket","affiliate","servers"));
 
     }
 }

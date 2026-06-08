@@ -494,9 +494,19 @@ public function Request(string $url, string $method = 'get', array $params = [])
     }
       public function managerserver($server)
     {
-$url =  $this->getConfig('api_url'); 
-        return view("extensions.Pelican::managerserver",compact("server","url"));
+    
+    $siteId = $server['extension_fields']['info']['site_id'] ?? null;
+        if (!$siteId) {
+            return redirect()->back()->with('error', 'Site ID not found.');
+        }
+
+        $url = rtrim($this->getConfig('api_url'), '/') . '/manage/' . $siteId;
+        return redirect()->away($url);
+    
     }
+
+
+
     public function Sync ($servers){
 foreach ($servers as $server) {
             $id = $server["server_id"];

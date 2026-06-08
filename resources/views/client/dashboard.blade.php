@@ -19,7 +19,7 @@
     @endif
 
 
-    <div class="py-12 max-w-7xl mx-auto ">
+    <div class="py-6 max-w-7xl mx-auto ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-6">
             <div class="bg-white dark:bg-gray-800 border-2 dark:border-gray-800 overflow-hidden shadow-sm sm:rounded-xl py-4 xl:py-0">
                 <div class="lg:p-6 text-gray-900 dark:text-gray-100  flex xl:flex-row flex-col gap-4">
@@ -122,7 +122,67 @@
             </div>
         </div>
     </div>
-<footer class="fixed bottom-0 left-0 w-full border-2 bg-gray-100 dark:bg-gray-800 dark:border-gray-800 dark:text-white ">
+    
+
+  <div class="py-6 max-w-7xl mx-auto ">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-6">
+            <div class="bg-white dark:bg-gray-800 border-2 dark:border-gray-800  overflow-hidden shadow-sm sm:rounded-xl py-4 xl:py-0 ">
+            <h1 class="text-white pt-2 pl-6   text-xl font-bold">Mes services</h1>    
+            <div class="space-y-4 mt-6 ">
+                      @forelse($servers as $order)
+@if($order->status === 'cancelled')
+
+@else
+                            <div class="bg-white border-2 dark:bg-gray-700 p-4 mx-auto rounded-xl shadow-md flex items-center justify-between dark:border-gray-800 dark:text-white text-black relative " style="max-width: 1180px;">
+                                <div class="@if($order->status === 'pending') bg-yellow-500 @elseif($order->status === 'cancelled') bg-red-500 @else bg-green-500 @endif w-2  absolute left-0 top-0 bottom-0 rounded-l-lg"></div>
+
+                                <div class="flex-1 pl-2">
+                                    <h3 class="text-lg font-medium dark:text-white text-black">{{ $order->server_name }}</h3>
+                                    <p class="dark:text-gray-300 text-gray-600">Product : {{ $order->categorie }}</p>
+                                    <p class="dark:text-gray-300 text-gray-600">Prix : {{ number_format($order->cost, 2) }}€/Month</p>
+                                </div>
+                                <div class="flex-2 text-right ">
+                                    @if($order->status === 'pending')
+                                    <p class="text-gray-300">
+                                        Renew : Now
+
+                                    </p>
+                                    <a href="{{ route('paypal.pay', $order->id) }}" class="text-blue-600 hover:underline dark:text-blue-400">
+                                        Start paying
+                                    </a>
+                                    @elseif($order->status === 'cancelled')
+                                    <p class='text-red-600 '>Cancelled</p>
+                                    @else
+                                    <p class="text-gray-300">
+                                        Renew : {{ $order->renouvelle ? $order->renouvelle->format('d/m/Y') : 'No date available' }}
+                                    </p>
+                                    <a href="{{ route('client.servers.manage', $order->id) }}" class="text-blue-600 hover:underline dark:text-blue-400">
+                                        Manage
+                                    </a>
+                                    
+                                    @endif
+                                </div>
+                            </div>
+                            @endif
+                            @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-800 dark:text-gray-300">
+                                    No services found.
+                                </td>
+                            </tr>
+                            @endforelse
+                   
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+<footer class="relative bottom-0  left-0 w-full border-2 bg-gray-100 dark:bg-gray-800 dark:border-gray-800 dark:text-white ">
     <div class=" mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div class="flex space-x-8">
             <p class="text-gray-700 dark:text-white"> &copy; Copyright {{ now()->year }} {{ env('APP_NAME') }}. All rights reserved.</p>
