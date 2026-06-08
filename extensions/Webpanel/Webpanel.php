@@ -268,9 +268,12 @@ foreach ($response['php_versions'] as $version) {
 
     public function managerserver($server)
     {
- 
+    $siteId = $server['extension_fields']['info']['site_id'] ?? null;
+        if (!$siteId) {
+            return redirect()->back()->with('error', 'Site ID not found.');
+        }
 
-        $url = rtrim($this->getConfig('api_url'), '/');
+        $url = rtrim($this->getConfig('api_url'), '/') . '/manage/' . $siteId;
         return redirect()->away($url);
     }
 }
