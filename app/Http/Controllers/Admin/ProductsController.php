@@ -79,17 +79,28 @@ class ProductsController extends Controller
     /**
      * Affiche le formulaire pour modifier un admin.prix.
      */
-    public function edit(Product $id)
-    {
-    $server = ServerOrder::where("categorie",$id->name)->get();
+public function edit(Product $id)
+{
+    $server = ServerOrder::where("categorie", $id->name)->get();
     $extensions = ExtensionManager::getExtensions();
-            $categories = Categories::all();
+    $categories = Categories::all();
 
     $fields = $id->extension_fields;
 
-        $fields = json_decode($fields, true); // MUST be array
-        return view('admin.products.edit', compact('id','server','extensions','fields','categories'));
+    if (is_string($fields)) {
+        $fields = json_decode($fields, true) ?? [];
+    } elseif (!is_array($fields)) {
+        $fields = [];
     }
+
+    return view('admin.products.edit', compact(
+        'id',
+        'server',
+        'extensions',
+        'fields',
+        'categories'
+    ));
+}
     /**
      * Met à jour un prix existant.
      */
