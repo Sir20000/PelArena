@@ -53,8 +53,14 @@ class ServersController extends Controller
 
         ]);
 
-        $extension_fields = json_decode($product->extension_fields,true);
-        $prix = $product->price;
+$extension_fields = [];
+
+if (is_string($product->extension_fields)) {
+    $extension_fields = json_decode($product->extension_fields, true) ?? [];
+} elseif (is_array($product->extension_fields)) {
+    $extension_fields = $product->extension_fields;
+}
+            $prix = $product->price;
 
 
         if ($product->stock == 0) {
